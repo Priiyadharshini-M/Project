@@ -14,36 +14,47 @@ const viewDonors = async(req,res) => {
 
 const addDonor = async(req,res)=>
 {
+
     let donor
-    const { userName, address, city, password, confirmPassword, bloodGroup, gender, age, email, lastDonateDate, allergies, disease } = req.body
-    const contact = Number(req.body.contact)
     try{
-    const newDonor = new Donor({
-        userName,
-        address,
-        city,
-        password,
-        confirmPassword,
-        bloodGroup,
-        gender,
-        age,
-        contact,
-        email,
-        lastDonateDate,
-        allergies,
-        disease
-
-    })
-
-    donor = await newDonor.save()
-    return res.status(201).json({ message : 'New Donor details added',donor })}
-
-    catch(err) {
-        return res.status(404).json({ message : err.message })
+        const result = await donorValidation.validateAsync(req.body,{abortEarly : false})
+        donor = await Donor.findOne({email : result.email})
+        if(donor) 
+           throw "This mail id has already been registered for donor"
+        donor = new Donor(result)
+        await user.save()
+        return res.status(201).json({message : "Succesfully registered",donor})
     }
-    return res.status(400).json({ message : "Can't add Donor" })
+    catch(err) {
+        if(err.isJoi === true)
+        {
+            const errors = []
+            err.details.forEach(detail => {
+            let error = {
+                [detail.path] : detail.message
+            }
+            errors.push(error)
+        })
+        return res.status(400).json(errors)
+        }
+        return res.status(400).json({errorMessage : err})
+    } 
 }
-
+const loginDonor = async(req,res,next) => {
+    let donor
+    try{
+        // const loginResult = await loginValidationSchema.validateAsync(req.body,{abortEarly : false})
+        donor = await Donor.findOne({email : req.body.email})
+        if(donor == null) 
+           throw "No account exists with this email id"
+        if(! (donor.password === req.body.password))
+            throw "Incorrect Password"
+        return res.status(201).json({message : "Succesfully logged in",donor})
+    }
+    catch(err){
+        return res.status(404).json({errorMessage : err})
+    }
+}
 const viewDonor = async(req,res) => {
     let donor
     try{
@@ -70,34 +81,60 @@ const deleteDonor = async(req,res) => {
 
 const updateDonor = async(req,res)=>
 {
+
     let donor
-    const {userName,address,city,password,bloodGroup,gender,age,email,lastDonateDate,allergies,disease}=req.body
-    const contact=Number(req.body.contact)
+    console.log("req body : ",req.body)
     try{
-    donor=await Donor.findById(req.params.id,{
-        userName,
-        address,
-        city,
-        password,
-        confirmPassword,
-        bloodGroup,
-        gender,
-        age,
-        contact,
-        email,
-        lastDonateDate,
-        allergies,
-        disease
-
-    })
-
-    donor = await donor.save()
-    return res.status(200).json({ message : 'Donor details updated',donor })}
-
-    catch(err) {
-        return res.status(404).json({ message : err.message })
+        const result = await donorValidation.validateAsync(req.body,{abortEarly : false})
+        console.log("result : ",result)
+        donor = new Donor(result)
+        await donor.save()
+        return res.status(201).json({message : "Succesfully updated profile",donor})
     }
-    return res.status(400).json({ message : "Can't update Donor" })
+    catch(err) {
+        if(err.isJoi === true)
+        {
+            const errors = []
+            err.details.forEach(detail => {
+            let error = {
+                [detail.path] : detail.message
+            }
+            console.log(error)
+            errors.push(error)
+        })
+        if(err) return res.status(400).json(errors)
+        }
+        return res.status(400).json({errorMessage : err})
+    } 
+
+    // let donor
+    // const {userName,address,city,password,bloodGroup,gender,age,email,lastDonateDate,allergies,disease}=req.body
+    // const contact=Number(req.body.contact)
+    // try{
+    // donor=await Donor.findById(req.params.id,{
+    //     userName,
+    //     address,
+    //     city,
+    //     password,
+    //     confirmPassword,
+    //     bloodGroup,
+    //     gender,
+    //     age,
+    //     contact,
+    //     email,
+    //     lastDonateDate,
+    //     allergies,
+    //     disease
+
+    // })
+
+    // donor = await donor.save()
+    // return res.status(200).json({ message : 'Donor details updated',donor })}
+
+    // catch(err) {
+    //     return res.status(404).json({ message : err.message })
+    // }
+    // return res.status(400).json({ message : "Can't update Donor" })
 }
 
 const viewSpecificDonors = async(req,res) => {
@@ -111,4 +148,4 @@ const viewSpecificDonors = async(req,res) => {
     }
     return res.status(404).json({ message : "No donors found" })
 }
-module.exports = { addDonor, viewDonor, viewDonors, deleteDonor, updateDonor, viewSpecificDonors }
+module.exports = { addDonor, viewDonor, viewDonors, deleteDonor, updateDonor, viewSpecificDonors, loginDonor }

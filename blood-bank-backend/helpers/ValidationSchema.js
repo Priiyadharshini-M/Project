@@ -78,7 +78,16 @@ const donarValidation = joi.object({
                .pattern(new RegExp('^([a-z]+[\.-\d]*)@([a-z-]+)\.([a-z\-]{2,8})(\.[a-z]{2,8})?$'))
                .required(),
     allergies : joi.string()
-                   .pattern(new RegExp('^[a-zA-Z ]+$'))
+                   .pattern(new RegExp('no'))
+                   .required(),
+    disease : joi.boolean()
+                 .truthy("no")
+                 .valid(true)
+                 .required(),
+    age : joi.number()
+             .greater(18)
+             .required()
+
     
 })
 

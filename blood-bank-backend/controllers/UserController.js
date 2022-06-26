@@ -38,7 +38,7 @@ const loginUser = async(req,res,next) => {
         if(user == null) 
            throw "No account exists with this email id"
         if(! (user.userPassword === req.body.userPassword))
-            throw "Password doesn't match"
+            throw "Incorrect Password"
         return res.status(201).json({message : "Succesfully logged in",user})
     }
     catch(err){
@@ -60,23 +60,30 @@ const viewProfile = async(req,res,next) => {
 }
 
 const updateProfile = async(req,res) => {
-    const{ userName, userEmail, userPassword, userContact, userAddress } = req.body
     let user
+    console.log("req body : ",req.body)
     try{
-        user = await User.findByIdAndUpdate(req.params.id,{
-            userName,
-            userEmail,
-            userPassword,
-            userContact,
-            userAddress
-        })
-        user = await user.save()
-        return res.status(200).json({ message:"Successfully updated",user })
+        const result = await userValidation.validateAsync(req.body,{abortEarly : false})
+        console.log("result : ",result)
+        user = new User(result)
+        await user.save()
+        return res.status(201).json({message : "Succesfully updated profile",user})
     }
     catch(err) {
-        return res.status(404).json({ message : err.message })
-    }
-    return res.status(400).json({ message:"Unable to update this id" }) 
+        if(err.isJoi === true)
+        {
+            const errors = []
+            err.details.forEach(detail => {
+            let error = {
+                [detail.path] : detail.message
+            }
+            console.log(error)
+            errors.push(error)
+        })
+        if(err) return res.status(400).json(errors)
+        }
+        return res.status(400).json({errorMessage : err})
+    } 
 }
 
 const deleteProfile = async(req,res) => {
