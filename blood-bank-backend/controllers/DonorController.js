@@ -1,24 +1,24 @@
-let Donor=require('../models/Donor')
+let Donor = require('../models/Donor')
 
 const viewDonors = async(req,res) => {
     let donor
     try{
         donor = await Donor.find()
-        return res.status(200).json({donor})
+        return res.status(200).json({ donor })
     }
     catch(err) {
-        return res.status(404).json({message : err.message})
+        return res.status(404).json({ message : err.message })
     }
-    return res.status(404).json({message : "No donors found"})
+    return res.status(404).json({ message : "No donors found" })
 }
 
-const addDonor=async(req,res)=>
+const addDonor = async(req,res)=>
 {
     let donor
-        const {userName,address,city,password,confirmPassword,bloodGroup,gender,age,email,lastDonateDate,allergies,disease}=req.body
-        const contact=Number(req.body.contact)
-        try{
-    const newDonor=new Donor({
+    const { userName, address, city, password, confirmPassword, bloodGroup, gender, age, email, lastDonateDate, allergies, disease } = req.body
+    const contact = Number(req.body.contact)
+    try{
+    const newDonor = new Donor({
         userName,
         address,
         city,
@@ -35,80 +35,80 @@ const addDonor=async(req,res)=>
 
     })
 
-    donor=await newDonor.save()
-    return res.status(201).json('New Donor details added',donor)}
+    donor = await newDonor.save()
+    return res.status(201).json({ message : 'New Donor details added',donor })}
 
     catch(err) {
-        return res.status(404).json({message : err.message})
+        return res.status(404).json({ message : err.message })
     }
-    return res.status(400).json({message : "Can't add Donor"})
+    return res.status(400).json({ message : "Can't add Donor" })
 }
 
 const viewDonor = async(req,res) => {
     let donor
     try{
         donor = await Donor.findById(req.params.id)
-        return res.status(200).json({donor})
+        return res.status(200).json({ donor })
     }
     catch(err) {
-        return res.status(404).json({message : err.message})
+        return res.status(404).json({ message : err.message })
     }
-    return res.status(404).json({message : "No Donor found"})
+    return res.status(404).json({ message : "No Donor found" })
 }
 
 const deleteDonor = async(req,res) => {
     let donor
     try{
         donor = await Donor.findByIdAndDelete(req.params.id)
-        return res.status(200).json({message:"Deleted",donor})
+        return res.status(200).json({ message:"Deleted",donor })
     }
     catch(err) {
-        return res.status(404).json({message : err.message})
+        return res.status(404).json({ message : err.message })
     }
-    return res.status(400).json({message : "Can't delete donor",donor})
+    return res.status(400).json({ message : "Can't delete donor",donor })
 }
 
-const updateDonor=async(req,res)=>
+const updateDonor = async(req,res)=>
 {
     let donor
-        const {userName,address,city,password,bloodGroup,gender,age,email,lastDonateDate,allergies,disease}=req.body
-        const contact=Number(req.body.contact)
-        try{
-        donor=await Donor.findById(req.params.id,{
-            userName,
-            address,
-            city,
-            password,
-            confirmPassword,
-            bloodGroup,
-            gender,
-            age,
-            contact,
-            email,
-            lastDonateDate,
-            allergies,
-            disease
+    const {userName,address,city,password,bloodGroup,gender,age,email,lastDonateDate,allergies,disease}=req.body
+    const contact=Number(req.body.contact)
+    try{
+    donor=await Donor.findById(req.params.id,{
+        userName,
+        address,
+        city,
+        password,
+        confirmPassword,
+        bloodGroup,
+        gender,
+        age,
+        contact,
+        email,
+        lastDonateDate,
+        allergies,
+        disease
 
     })
 
-    donor=await donor.save()
-    return res.status(200).json('Donor details updated',donor)}
+    donor = await donor.save()
+    return res.status(200).json({ message : 'Donor details updated',donor })}
 
     catch(err) {
-        return res.status(404).json({message : err.message})
+        return res.status(404).json({ message : err.message })
     }
-    return res.status(400).json({message : "Can't update Donor"})
+    return res.status(400).json({ message : "Can't update Donor" })
 }
 
 const viewSpecificDonors = async(req,res) => {
     let donor
     try{
-        donor = await Donor.find({ bloodGroup: req.params.bloodGroup,city:req.params.city})
-        return res.status(200).json({donor:donor.userName})
+        donor = await Donor.find({ bloodGroup: req.params.bloodGroup, city:req.params.city })
+        return res.status(200).json({ donor:donor.userName })
     }
     catch(err) {
-        return res.status(404).json({message : err.message})
+        return res.status(404).json({ message : err.message })
     }
-    return res.status(404).json({message : "No donors found"})
+    return res.status(404).json({ message : "No donors found" })
 }
-module.exports={addDonor,viewDonor,viewDonors,deleteDonor,updateDonor,viewSpecificDonors};
+module.exports = { addDonor, viewDonor, viewDonors, deleteDonor, updateDonor, viewSpecificDonors }
