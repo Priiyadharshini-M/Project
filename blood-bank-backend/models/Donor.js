@@ -43,7 +43,8 @@ const donorSchema = new Schema({
     },
     bloodGroup : {
         type : String,
-        required : true
+        required : true,
+        trim : true
     },
     gender : {
         type : String,
