@@ -6,10 +6,18 @@ const registerUser = async(req,res) => {
     let user
     try{
         const result = await userValidation.validateAsync(req.body,{abortEarly : false})
+        const { userName, userAddress, userContact, userPassword, userEmail } = result
         user = await User.findOne({userEmail : result.userEmail})
         if(user) 
            throw "This mail id has already been registered"
-        user = new User(result)
+        const hashedPassword = await bcryptjs.hash(userPassword, 10)
+        user = new User({
+            userName, 
+            userAddress, 
+            userContact, 
+            userPassword : hashedPassword, 
+            userEmail
+        })
         await user.save()
         return res.status(201).json({message : "Succesfully registered",user})
     }
@@ -37,7 +45,7 @@ const loginUser = async(req,res,next) => {
         user = await User.findOne({userEmail : req.body.userEmail})
         if(user == null) 
            throw "No account exists with this email id"
-        if(! (user.userPassword === req.body.userPassword))
+        if(!bcryptjs.compareSync(user.userPassword,req.body.userPassword))
             throw "Incorrect Password"
         return res.status(201).json({message : "Succesfully logged in",user})
     }
