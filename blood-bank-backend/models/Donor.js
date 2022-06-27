@@ -56,7 +56,8 @@ const donorSchema = new Schema({
     },
     email : {
         type : String,
-        required : true
+        required : true,
+        lowercase : true,
     },
     lastDonateDate : {
         type : String,

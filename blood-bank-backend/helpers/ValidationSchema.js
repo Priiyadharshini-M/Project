@@ -11,7 +11,11 @@ const bloodCampValidation = joi.object({
                    .max(25)
                    .pattern(new RegExp('^[a-zA-Z ]+$'))
                    .required(),
-    enddate : joi.date()
+    address : joi.string()
+                 .required(),
+    startDate : joi.date()
+                   .required(),  
+    endDate : joi.date()
                  .greater(new Date(Date.now()))
                  .required()
 

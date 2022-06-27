@@ -6,12 +6,6 @@ const campSchema = new Schema({
         required : true,
         trim : true,
         minlength : 3
-        //validate:{
-        //     validator:function(hospital){
-        //         return hospital.match(/^[a-zA-Z ]+$/)
-        //     },
-        //     message:'Hospital name should contain only alphabets and space'
-        // }
     },
     address : {
         type : String,
@@ -22,12 +16,6 @@ const campSchema = new Schema({
         required : true,
         trim : true,
         minlength : 3
-        // validate:{
-        //     validator:function(camp){
-        //         return camp.match(/^[a-zA-Z/d!@ ]+$/)
-        //     },
-        //     message:'Camp name should contain only alphabets,space,digits,! and @'
-        // }
     },
     startDate : {
         type : Date,
@@ -36,12 +24,6 @@ const campSchema = new Schema({
     endDate : {
         type : Date,
         required : true
-        // validate:{
-        //     validator:function(date){
-        //         return date>Date.now()
-        //     },
-        //     message:'Camp finished'
-        // }
     }
 
 },
@@ -50,4 +32,4 @@ const campSchema = new Schema({
 })
 
 const Camp = mongoose.model('Camp',campSchema)
-module.exports = Camp
+module.exports = {Camp}

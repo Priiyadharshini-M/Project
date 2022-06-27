@@ -1,7 +1,6 @@
 
-let Camp = require('../models/BloodCamp')
+const {Camp} = require('../models/BloodCamp')
 const { bloodCampValidation } = require('../helpers/ValidationSchema')
-const Joi = require('@hapi/joi')
 
 const viewCamps = async(req,res) => {
     let camps
@@ -17,16 +16,22 @@ const viewCamps = async(req,res) => {
 
 const addCamp = async(req,res)=>
 {
-    let camps
-    console.log("req body : ",req.body)
+    let camp
     try{
-        const result = await bloodCampValidation.validateAsync(req.body,{abortEarly : false})
-        console.log("result : ",registerResult)
-        camps = new Camp(result)
-        await camps.save()
-        return res.status(201).json({message : "Succesfully added camp",camps})
+        let options = {abortEarly : false}
+        const campResult = await bloodCampValidation.validateAsync(req.body,options)
+        console.log(campResult)
+        const { campName,  } = campResult
+        user = await User.findOne({userEmail : result.userEmail})
+        if(user) 
+           throw "This mail id has already been registered"
+        if(campResult != null)
+        camp = new Camp(campResult)
+        await camp.save()
+        return res.status(201).json({message : "Succesfully camp has been added",camp})
     }
     catch(err) {
+        console.log("catch block")
         if(err.isJoi === true)
         {
             const errors = []
@@ -34,35 +39,12 @@ const addCamp = async(req,res)=>
             let error = {
                 [detail.path] : detail.message
             }
-            console.log(error)
             errors.push(error)
         })
-        if(err) return res.status(400).json(errors)
+        return res.status(400).json(errors)
         }
         return res.status(400).json({errorMessage : err})
     } 
-
-    // let camps
-    // const { hospitalName, address, campName } = req.body
-    // const startDate = Date.parse(req.body.startDate)
-    // console.log(startDate)
-    // const endDate = Date.parse(req.body.endDate)
-    // try{
-    // const newCamp = new Camp({
-    //     hospitalName,
-    //     address,
-    //     campName,
-    //     startDate,
-    //     endDate
-
-    // })
-    // camps = await newCamp.save()
-    // return res.status(200).json({ message : 'New Blood Camp details added',camps })}
-
-    // catch(err) {
-    //     return res.status(404).json({ message : err.message })
-    // }
-    //return res.status(400).json({ message : "Can't add camp" })
 }
 
 const viewCamp = async(req,res) => {

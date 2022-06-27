@@ -1,5 +1,6 @@
 const User = require('../models/User')
-const Joi = require('@hapi/joi')
+//const Joi = require('@hapi/joi')
+const bcryptjs = require('bcryptjs');
 const { userValidation } = require('../helpers/ValidationSchema')
 
 const registerUser = async(req,res) => {
