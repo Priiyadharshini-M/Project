@@ -22,8 +22,7 @@ const userSchema = new Schema({
     userPassword : {
         type : String,
         required : true,
-        minlength : 6,
-        maxlength : 16
+        minlength : 6
     },
     userEmail : {
         type : String,
@@ -37,8 +36,8 @@ const userSchema = new Schema({
 })
 
 //jwt token
-User.methods.getJWTToken = function (){
-    return jwt.sign({id:this._id},""+process.env.JWT_SECRET,{
+userSchema.methods.getJWTToken = function (){
+    return jwt.sign({id:this._id},process.env.JWT_SECRET,{
         expiresIn:'12h',
     });
 };

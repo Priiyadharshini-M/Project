@@ -23,7 +23,7 @@ const bloodCampValidation = joi.object({
 })
 
 const userValidation = joi.object({
-    username : joi.string()
+    userName : joi.string()
                   .min(3)
                   .max(25)
                   .pattern(new RegExp('^[a-zA-Z ]+$'))
@@ -33,7 +33,6 @@ const userValidation = joi.object({
                      .required(),
     userPassword : joi.string()
                       .min(6)
-                      .max(15)
                       .pattern(new RegExp('^[a-zA-Z0-9]{8,20}$'))
                       .required(),
     confirmUserPassword : joi.ref('userPassword'),
@@ -41,7 +40,8 @@ const userValidation = joi.object({
                    .email()
                    .lowercase()
                    .pattern(new RegExp('^([a-z]+[\.-\d]*)@([a-z-]+)\.([a-z\-]{2,8})(\.[a-z]{2,8})?$'))
-                   .required()
+                   .required(),
+    userAddress : joi.string()
     
 })
 

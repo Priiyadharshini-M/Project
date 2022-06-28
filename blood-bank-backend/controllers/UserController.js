@@ -22,7 +22,6 @@ const registerUser = async(req,res) => {
         })
         await user.save()
         sendToken(user,201,res)
-        return res.status(201).json({message : "Succesfully registered",user})
     }
     catch(err) {
         if(err.isJoi === true)
@@ -48,10 +47,10 @@ const loginUser = async(req,res,next) => {
         user = await User.findOne({userEmail : req.body.userEmail})
         if(user == null) 
            throw "No account exists with this email id"
-        if(!bcryptjs.compareSync(user.userPassword,req.body.userPassword))
+        //console.log(user.userPassword+" "+req.body.userPassword)
+        if(!bcryptjs.compareSync(req.body.userPassword,user.userPassword))
             throw "Incorrect Password"
         sendToken(user,201,res)
-        return res.status(201).json({message : "Succesfully logged in",user})
     }
     catch(err){
         return res.status(404).json({errorMessage : err})
@@ -75,11 +74,25 @@ const updateProfile = async(req,res) => {
     let user
     console.log("req body : ",req.body)
     try{
-        const result = await userValidation.validateAsync(req.body,{abortEarly : false})
-        console.log("result : ",result)
-        user = new User(result)
+        if(req.params.id.length == 24)
+        user = await User.findById(req.params.id)
+        else throw `Invalid Object Id`
+        if(user != null)
+        {
+        let options = {abortEarly : false}
+        const updateResult = await userValidation.validateAsync(req.body,{abortEarly : false})
+        const { userName, userEmail, userPassword, userContact, userAddress } = updateResult
+        const hashedPassword = await bcrypt.hash(userPassword,10) 
+        user = await User.findByIdAndUpdate(req.params.id,{
+            userName,
+            userEmail,
+            userPassword : hashedPassword,
+            userContact,
+            userAddress
+        })
         await user.save()
-        return res.status(201).json({message : "Succesfully updated profile",user})
+        return res.status(200).json({message:"Successfully updated",user})
+        }
     }
     catch(err) {
         if(err.isJoi === true)

@@ -85,11 +85,31 @@ const updateDonor = async(req,res)=>
     let donor
     console.log("req body : ",req.body)
     try{
-        const result = await donorValidation.validateAsync(req.body,{abortEarly : false})
-        console.log("result : ",result)
-        donor = new Donor(result)
+        if(req.params.id.length == 24)
+        donor = await Donor.findById(req.params.id)
+        else throw `Invalid Object Id`
+        if(donor != null)
+        {
+        const updateResult = await userValidation.validateAsync(req.body,{abortEarly : false})
+        const { userName, address, city, password, bloodGroup, gender, age, contact, email, lastDonateDate, allergies, disease } = updateResult
+        const hashedPassword = await bcrypt.hash(password,10) 
+        user = await Donor.findByIdAndUpdate(req.params.id,{
+            password : hashedPassword,
+            userName,
+            address,
+            city,
+            bloodGroup,
+            gender,
+            age,
+            contact,
+            email,
+            lastDonateDate,
+            allergies,
+            disease
+        })
         await donor.save()
-        return res.status(201).json({message : "Succesfully updated profile",donor})
+        return res.status(200).json({message:"Successfully updated profile",donor})
+        }
     }
     catch(err) {
         if(err.isJoi === true)
@@ -106,35 +126,6 @@ const updateDonor = async(req,res)=>
         }
         return res.status(400).json({errorMessage : err})
     } 
-
-    // let donor
-    // const {userName,address,city,password,bloodGroup,gender,age,email,lastDonateDate,allergies,disease}=req.body
-    // const contact=Number(req.body.contact)
-    // try{
-    // donor=await Donor.findById(req.params.id,{
-    //     userName,
-    //     address,
-    //     city,
-    //     password,
-    //     confirmPassword,
-    //     bloodGroup,
-    //     gender,
-    //     age,
-    //     contact,
-    //     email,
-    //     lastDonateDate,
-    //     allergies,
-    //     disease
-
-    // })
-
-    // donor = await donor.save()
-    // return res.status(200).json({ message : 'Donor details updated',donor })}
-
-    // catch(err) {
-    //     return res.status(404).json({ message : err.message })
-    // }
-    // return res.status(400).json({ message : "Can't update Donor" })
 }
 
 const viewSpecificDonors = async(req,res) => {
