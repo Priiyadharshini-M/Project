@@ -1,9 +1,10 @@
 const express = require('express')
 const { registerUser, viewProfile, updateProfile, deleteProfile, loginUser } = require('../controllers/UserController')
+const { isAuthenticatedUser } = require('../helpers/auth')
 const userRouter = express.Router()
 userRouter.post('/register',registerUser)
 userRouter.post('/login',loginUser)
-userRouter.get('/:id',viewProfile)
-userRouter.put('/update/:id',updateProfile)
-userRouter.delete('/delete/:id',deleteProfile)
+userRouter.get('/:id',isAuthenticatedUser,viewProfile)
+userRouter.put('/update/:id',isAuthenticatedUser,updateProfile)
+userRouter.delete('/delete/:id',isAuthenticatedUser,deleteProfile)
 module.exports = { userRouter }

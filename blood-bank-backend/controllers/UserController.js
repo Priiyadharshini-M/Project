@@ -1,7 +1,8 @@
 const User = require('../models/User')
 //const Joi = require('@hapi/joi')
 const bcryptjs = require('bcryptjs');
-const { userValidation } = require('../helpers/ValidationSchema')
+const { userValidation } = require('../helpers/ValidationSchema');
+const sendToken = require('../util/JwtToken');
 
 const registerUser = async(req,res) => {
     let user
@@ -20,6 +21,7 @@ const registerUser = async(req,res) => {
             userEmail
         })
         await user.save()
+        sendToken(user,201,res)
         return res.status(201).json({message : "Succesfully registered",user})
     }
     catch(err) {
@@ -48,6 +50,7 @@ const loginUser = async(req,res,next) => {
            throw "No account exists with this email id"
         if(!bcryptjs.compareSync(user.userPassword,req.body.userPassword))
             throw "Incorrect Password"
+        sendToken(user,201,res)
         return res.status(201).json({message : "Succesfully logged in",user})
     }
     catch(err){

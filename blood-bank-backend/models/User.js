@@ -37,11 +37,11 @@ const userSchema = new Schema({
 })
 
 //jwt token
-// User.methods.getJWTToken = function (){
-//     return jwt.sign({id:this._id},""+process.env.JWT_SECRET,{
-//         expiresIn:'12h',
-//     });
-// };
+User.methods.getJWTToken = function (){
+    return jwt.sign({id:this._id},""+process.env.JWT_SECRET,{
+        expiresIn:'12h',
+    });
+};
 
 const User = mongoose.model('User',userSchema)
 module.exports = User
