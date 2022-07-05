@@ -1,20 +1,28 @@
-const { string, required } = require('@hapi/joi');
+// const { string, required } = require('@hapi/joi');
 const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken')
+require('dotenv').config()
 const Schema = mongoose.Schema;
 const adminSchema = new Schema({
     adminEmail : {
-        type : string,
-        lowercase : required,
+        type : String,
+        lowercase : true,
         required : true
     },
     adminPassword : {
-        type : string,
+        type : String,
         required : true
     }
 },
 {
     timestamps : true
 })
+
+adminSchema.methods.getJWTToken = function(){
+    return jwt.sign({id:this._id},process.env.JWT_SECRET,{
+        expiresIn:'5h',
+    });
+}
 
 const Admin = mongoose.model('Admin',adminSchema)
 module.exports = Admin

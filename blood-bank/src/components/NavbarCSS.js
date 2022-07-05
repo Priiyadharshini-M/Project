@@ -3,9 +3,9 @@ const useStyles = makeStyles({
     box: {
         color : "green",
         border: "3px solid green",
-        radius : 2
+        borderRadius : "2r"
     },
-    
+
     })
     
     

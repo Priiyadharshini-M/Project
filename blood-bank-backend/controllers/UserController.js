@@ -2,7 +2,7 @@ const User = require('../models/User')
 //const Joi = require('@hapi/joi')
 const bcryptjs = require('bcryptjs');
 const { userValidation } = require('../helpers/ValidationSchema');
-const sendToken = require('../util/JwtToken');
+const { sendToken } = require('../util/JwtToken');
 
 const registerUser = async(req,res) => {
     let user
@@ -79,10 +79,11 @@ const updateProfile = async(req,res) => {
         else throw `Invalid Object Id`
         if(user != null)
         {
-        let options = {abortEarly : false}
+        // let options = {abortEarly : false}
         const updateResult = await userValidation.validateAsync(req.body,{abortEarly : false})
+        console.log("updated",updateResult)
         const { userName, userEmail, userPassword, userContact, userAddress } = updateResult
-        const hashedPassword = await bcrypt.hash(userPassword,10) 
+        const hashedPassword = await bcryptjs.hash(userPassword,10) 
         user = await User.findByIdAndUpdate(req.params.id,{
             userName,
             userEmail,
@@ -114,7 +115,7 @@ const updateProfile = async(req,res) => {
 const deleteProfile = async(req,res) => {
     let user
     try{
-        user = await user.findByIdAndDelete(req.params.id)
+        user = await User.findByIdAndDelete(req.params.id)
         return res.status(200).json({ message:"Deleted",user })
     }
     catch(err) {

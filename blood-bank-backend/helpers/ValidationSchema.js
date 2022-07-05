@@ -95,4 +95,17 @@ const donarValidation = joi.object({
     
 })
 
-module.exports = { bloodCampValidation, userValidation }
+const adminValidation = joi.object({
+    adminEmail : joi.string()
+                   .email()
+                   .lowercase()
+                   .pattern(new RegExp('^([a-z]+[\.-\d]*)@([a-z-]+)\.([a-z\-]{2,8})(\.[a-z]{2,8})?$'))
+                   .required(),
+
+    adminPassword : joi.string()
+                      .min(8)
+                      .pattern(new RegExp('^[a-zA-Z0-9]{8,20}$'))
+                      .required()     
+})
+
+module.exports = { bloodCampValidation, userValidation, donarValidation, adminValidation }

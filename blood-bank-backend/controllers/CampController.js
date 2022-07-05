@@ -21,10 +21,10 @@ const addCamp = async(req,res)=>
         let options = {abortEarly : false}
         const campResult = await bloodCampValidation.validateAsync(req.body,options)
         console.log(campResult)
-        const { campName,  } = campResult
-        user = await User.findOne({userEmail : result.userEmail})
-        if(user) 
-           throw "This mail id has already been registered"
+        //const { campName, hospitalName } = campResult
+        camp = await Camp.findOne({campName : campResult.campName, hospitalName : campResult.hospitalName})
+        if(camp) 
+           throw "This camp has already been registered in the given hospital" 
         if(campResult != null)
         camp = new Camp(campResult)
         await camp.save()
@@ -76,11 +76,30 @@ const updateCamp = async(req,res)=>
     let camp
     console.log("req body : ",req.body)
     try{
-        const result = await bloodCampValidation.validateAsync(req.body,{abortEarly : false})
-        console.log("result : ",result)
-        camp = new Camp(result)
+        if(req.params.id.length == 24)
+        camp = await Camp.findById(req.params.id)
+        else throw `Invalid Object Id`
+        if(camp != null)
+        {
+        const updateResult = await bloodCampValidation.validateAsync(req.body,{abortEarly : false})
+        const { campName, hospitalName, address, startDate, endDate } = updateResult 
+        camp = await Camp.findByIdAndUpdate(req.params.id,{
+            campName,
+            hospitalName,
+            address,
+            startDate,
+            endDate
+        })
         await camp.save()
-        return res.status(201).json({message : "Succesfully updated camp",camp})
+        return res.status(200).json({message:"Successfully updated",camp})
+        }
+
+
+        // const result = await bloodCampValidation.validateAsync(req.body,{abortEarly : false})
+        // console.log("result : ",result)
+        // camp = new Camp(result)
+        // await camp.save()
+        // return res.status(201).json({message : "Succesfully updated camp",camp})
     }
     catch(err) {
         if(err.isJoi === true)
