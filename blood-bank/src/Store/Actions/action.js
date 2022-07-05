@@ -1,5 +1,4 @@
 import axios from 'axios'
-import React,{ useState } from 'react'
 import { url } from "../../api"
 
 export const viewProfile = () =>{
@@ -21,13 +20,14 @@ export const viewProfile = () =>{
 export const signIn = (user) =>{
     return (dispatch, getState) =>{
         axios.post(`${url}/users`, user)
-        .then(token =>{
-            console.log("token is"+token.data.token)
-            localStorage.setItem("token",token.data.token)
+        .then(user =>{
+            console.log("token is"+user.data)
+            //localStorage.setItem("token",token.data.token)
 
             dispatch({
                 type : "SIGN_IN",
-                tokens : token.data.token
+                //tokens : token.data.token
+                user
             })
         })
         .catch(err =>{
@@ -55,7 +55,7 @@ export const logIn = (credentials) =>{
     return (dispatch) =>{
         axios.post(`${url}/users/login`, credentials)
         .then(token =>{
-            //console.log("token is"+token.data.token)
+            console.log("token is"+token.data.token)
             localStorage.setItem("token",token.data.token)
 
             dispatch({

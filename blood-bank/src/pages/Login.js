@@ -1,12 +1,15 @@
 import { Box, TextField, Button, Typography } from "@mui/material"
 import { useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
 import { setLogin } from "../Store/Actions/authAction"
+import { logIn } from "../Store/Actions/action"
 
 export const Login= () => {
     const navigate=useNavigate()
     const dispatch = useDispatch()
+    const user = useSelector(state => state.user)
+    console.log(user)
     const[isUser,setIsUser] = useState(true)
     const[loginCredentials,setLoginCredentials] = useState({
         userName : '',
@@ -25,10 +28,18 @@ export const Login= () => {
     const submitHandler=(event)=>
     {
         event.preventDefault()
+        dispatch(logIn(loginCredentials))
         dispatch(setLogin())
         navigate('/')
     }
-    
+    const submitDonorHandler=(event)=>
+    {
+        event.preventDefault()
+        // dispatch(logIn(loginCredentials))
+        // dispatch(setLogin())
+        //navigate('/')
+    }
+    if(user._id) return navigate('/')
 
     return(
             <>
@@ -51,7 +62,7 @@ export const Login= () => {
 
             { !isUser && 
             <>
-            <form onSubmit={submitHandler}>
+            <form onSubmit={submitDonorHandler}>
                 <TextField type="email" variant="standard" name="userName" value={donorCredentials.userName} onChange={changeDonorHandler} required label="Donor email" sx={{marginLeft:"15%",marginTop:"5%",width:"70%"}}/>
                 <TextField type="password" variant="standard" name="password" value={donorCredentials.password} onChange={changeDonorHandler} required label="Donor password" sx={{marginLeft:"15%",marginTop:"5%",width:"70%"}}/>
     
