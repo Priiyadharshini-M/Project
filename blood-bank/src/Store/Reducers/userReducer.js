@@ -11,7 +11,7 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
     switch(action.type) {
         case "USER_LOADED":
-        case "SIGN_IN":
+        case "LOG_IN":
             const user = jwtDecode(action.tokens)
             // console.log("2nd token:"+action.tokens)
             // console.log("name:"+user)
@@ -24,6 +24,9 @@ const userReducer = (state = initialState, action) => {
                 userPassword: user.userPassword,
                 _id: user._id
              }
+
+        case "SIGN_IN":
+             return [action.user.data, ...initialState]
 
         default:
             return state

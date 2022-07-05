@@ -51,6 +51,24 @@ export const loadUser = () => {
     }
 }
 
+export const logIn = (credentials) =>{
+    return (dispatch) =>{
+        axios.post(`${url}/users/login`, credentials)
+        .then(token =>{
+            //console.log("token is"+token.data.token)
+            localStorage.setItem("token",token.data.token)
+
+            dispatch({
+                type : "LOG_IN",
+                tokens : token.data.token
+            })
+        })
+        .catch(err =>{
+            console.log(err.message)
+        })
+    }
+}
+
 //for camps
 export const addCamp = (camp) =>{
     return (dispatch, getState) =>{

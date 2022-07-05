@@ -29,8 +29,8 @@ export const Register=()=>
         event.preventDefault()
         dispatch(signIn(registerCredentials))
 
-        if(user._id) return
-        navigate('/')
+        //if(user._id) return
+        navigate('/login')
     }
     return(
         <>
