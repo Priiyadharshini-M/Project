@@ -38,12 +38,12 @@ export const signIn = (user) =>{
 
 export const loadUser = () => {
     return(dispatch, getState) => {
-        const token = getState().user.tokens
-        if(token)
+        const tokens = getState().user.tokens
+        if(tokens)
         {
             dispatch({
                type : "USER_LOADED",
-               token 
+               tokens 
             })
         }
         else 
