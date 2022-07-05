@@ -1,9 +1,9 @@
 const reducer = (camps=[], action) => {
     switch(action.type){
-        case "VIEW_PROFILE" :
-            return action.user.data
-        case "SIGN_IN" :
-            return [action.user.data, ...camps]
+        // case "VIEW_PROFILE" :
+        //     return action.user.data
+        // case "SIGN_IN" :
+        //     return [action.user.data, ...camps]
         case "ADD_CAMPS" :
             return [action.camps.data, ...camps]
         case "VIEW_CAMPS" :

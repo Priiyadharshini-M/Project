@@ -1,5 +1,5 @@
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import { Routes, Route } from 'react-router-dom';
 import { Home } from './pages/Home'
@@ -11,6 +11,8 @@ import { AdminCamps } from './pages/AdminCamps'
 import { AdminDonors } from './pages/AdminDonors'
 import { AdminHome } from './pages/AdminHome'
 import  AdminLogin  from './pages/AdminLogin'
+import { loadUser } from './Store/Actions/action'
+import { useDispatch } from 'react-redux';
 
 
 function App() {
@@ -20,6 +22,11 @@ function App() {
     campName:'',
     startDate:'',
     endDate:''})
+
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(loadUser())
+  }, [dispatch])
 
   return (
     <>

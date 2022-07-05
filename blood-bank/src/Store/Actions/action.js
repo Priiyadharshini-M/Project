@@ -23,7 +23,7 @@ export const signIn = (user) =>{
         axios.post(`${url}/users`, user)
         .then(token =>{
             console.log("token is"+token.data.token)
-            //localStorage.setItem("token",token.data.token)
+            localStorage.setItem("token",token.data.token)
 
             dispatch({
                 type : "SIGN_IN",
@@ -33,6 +33,21 @@ export const signIn = (user) =>{
         .catch(err =>{
             console.log(err.message)
         })
+    }
+}
+
+export const loadUser = () => {
+    return(dispatch, getState) => {
+        const token = getState().user.tokens
+        if(token)
+        {
+            dispatch({
+               type : "USER_LOADED",
+               token 
+            })
+        }
+        else 
+        return null
     }
 }
 
@@ -59,7 +74,7 @@ export const viewCamps = (camps) =>{
             //console.log("camps are",camps.data)
             dispatch({
                 type : "VIEW_CAMPS",
-                camps:camps.data.camps
+                camps: camps.data.camps
             })
         })
         .catch(err =>{

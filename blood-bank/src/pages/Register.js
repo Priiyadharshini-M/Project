@@ -1,16 +1,17 @@
 import { Box, TextField, Button, TextareaAutosize, Typography } from "@mui/material"
 import { useState } from "react"
-import { useNavigate  } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { DonorRegister } from "./DonorRegister"
 import { useDispatch, useSelector } from "react-redux"
 import { signIn } from "../Store/Actions/action"
+//import { Redirect } from 'react-router-dom';
 
 export const Register=()=>
 {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const state = useSelector(state => state)
-    console.log(state)
+    const user = useSelector(state => state.user)
+    console.log(user)
     const[isUser,setIsUser] = useState(true)
     const [registerCredentials, setRegisterCredentials] = useState({
         userName:'',
@@ -27,7 +28,9 @@ export const Register=()=>
     {
         event.preventDefault()
         dispatch(signIn(registerCredentials))
-        navigate('/login')
+
+        if(user._id) return
+        navigate('/')
     }
     return(
         <>
