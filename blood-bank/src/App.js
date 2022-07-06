@@ -26,7 +26,7 @@ function App() {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(loadUser())
-  }, [dispatch])
+  },[dispatch])
 
   return (
     <>
@@ -42,7 +42,7 @@ function App() {
             <Route path='/admin' element={<AdminHome />}></Route>
             <Route path='/admin/home' element={<AdminHome />}></Route>
             <Route path='/admin/login' element={<AdminLogin />}></Route>
-            <Route path='/admin/camps' element={<AdminCamps />}></Route>
+            <Route path='/admin/camps' element={<Camps setCampDetails={setCampDetails}/>}></Route>
             <Route path='/admin/donors' element={<AdminDonors />}></Route>
 
       </Routes>

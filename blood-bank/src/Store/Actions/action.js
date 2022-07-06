@@ -1,13 +1,14 @@
 import axios from 'axios'
-import { url } from "../../api"
+import { url, setHeaders } from "../../api/index"
+import { setLogin } from './authAction'
 
-export const viewProfile = () =>{
+export const viewProfile = (id) =>{
     return (dispatch) =>{
-        axios.get(`${url}/users`)
+        axios.get(`${url}/users/${id}`)
         .then(user =>{
             dispatch({
                 type : "VIEW_PROFILE",
-                user
+                id
             })
         })
         .catch(err =>{
@@ -38,10 +39,13 @@ export const signIn = (user) =>{
 
 export const loadUser = () => {
     return(dispatch, getState) => {
+        console.log("entered")
         const tokens = getState().user.tokens
+        console.log("loaded"+tokens)
         if(tokens)
         {
-            dispatch({
+            dispatch(setLogin())
+         return dispatch({
                type : "USER_LOADED",
                tokens 
             })
@@ -69,10 +73,18 @@ export const logIn = (credentials) =>{
     }
 }
 
+export const logOut = () => {
+    return (dispatch) => {
+        dispatch({
+            type : "LOG_OUT"
+        })
+    }
+}
+
 //for camps
 export const addCamp = (camp) =>{
     return (dispatch, getState) =>{
-        axios.post(`${url}/camps/addCamp`, camp)
+        axios.post(`${url}/camps/addCamp`, {...camp}, setHeaders())
         .then(camps =>{
             dispatch({
                 type : "ADD_CAMPS",
@@ -87,7 +99,7 @@ export const addCamp = (camp) =>{
 
 export const viewCamps = (camps) =>{
     return (dispatch) =>{
-        axios.get(`${url}/camps`)
+        axios.get(`${url}/camps`, setHeaders())
         .then(camps =>{
             //console.log("camps are",camps.data)
             dispatch({
@@ -104,7 +116,7 @@ export const viewCamps = (camps) =>{
 export const updateCamp = (updatedCamp, id) =>{
     console.log("updated camp",updatedCamp)
     return (dispatch) =>{
-        axios.put(`${url}/camps/update/${id}`, updatedCamp)
+        axios.put(`${url}/camps/update/${id}`, updatedCamp, setHeaders())
         .then(camps =>{
             dispatch({
                 type : "UPDATE_CAMPS",

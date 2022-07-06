@@ -12,11 +12,11 @@ export const Login= () => {
     console.log(user)
     const[isUser,setIsUser] = useState(true)
     const[loginCredentials,setLoginCredentials] = useState({
-        userName : '',
+        userEmail : '',
         userPassword : ''
     })
     const[donorCredentials,setDonorCredentials] = useState({
-        userName : '',
+        userEmail : '',
         password : ''
     })
     const changeHandler=(event)=>{
@@ -51,7 +51,7 @@ export const Login= () => {
             { isUser && 
             <>
             <form onSubmit={submitHandler}>
-                <TextField type="email" variant="standard" name="userName" value={loginCredentials.userName} onChange={changeHandler} required label="Your email" sx={{marginLeft:"15%",marginTop:"5%",width:"70%"}}/>
+                <TextField type="email" variant="standard" name="userEmail" value={loginCredentials.userName} onChange={changeHandler} required label="Your email" sx={{marginLeft:"15%",marginTop:"5%",width:"70%"}}/>
                 <TextField type="password" variant="standard" name="userPassword" value={loginCredentials.userPassword} onChange={changeHandler} required label="Your password" sx={{marginLeft:"15%",marginTop:"5%",width:"70%"}}/>
                 
                 <Button color="inherit" type="submit" sx={{width:"20%", marginLeft:"40%", marginTop:"10%", backgroundColor:"black", color:"green", border:3}}>Log in</Button>
@@ -63,7 +63,7 @@ export const Login= () => {
             { !isUser && 
             <>
             <form onSubmit={submitDonorHandler}>
-                <TextField type="email" variant="standard" name="userName" value={donorCredentials.userName} onChange={changeDonorHandler} required label="Donor email" sx={{marginLeft:"15%",marginTop:"5%",width:"70%"}}/>
+                <TextField type="email" variant="standard" name="userEmail" value={donorCredentials.userName} onChange={changeDonorHandler} required label="Donor email" sx={{marginLeft:"15%",marginTop:"5%",width:"70%"}}/>
                 <TextField type="password" variant="standard" name="password" value={donorCredentials.password} onChange={changeDonorHandler} required label="Donor password" sx={{marginLeft:"15%",marginTop:"5%",width:"70%"}}/>
     
                 <Button color="inherit" type="submit" sx={{width:"20%", marginLeft:"40%", marginTop:"10%", backgroundColor:"black", color:"green", border:3}}>Log in</Button>

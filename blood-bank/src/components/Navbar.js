@@ -6,6 +6,7 @@ import useStyles from "./NavbarCSS"
 import { useSelector, useDispatch } from "react-redux"
 import { useState } from "react"
 import { setLogout } from "../Store/Actions/authAction"
+import { logOut } from "../Store/Actions/action"
 
 export const Navbar = () => {
     const classes = useStyles();
@@ -15,6 +16,7 @@ export const Navbar = () => {
     const dispatch = useDispatch()
 
     const logoutHandler = () => {
+        dispatch(logOut())
         dispatch(setLogout())
     }
 

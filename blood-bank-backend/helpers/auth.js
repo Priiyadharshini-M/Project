@@ -6,8 +6,8 @@ const Admin = require("../models/Admin")
 
 
 const isAuthenticatedUser = async (req, res, next) => {
-    const { token } = req.cookies
-    console.log(req.cookies)
+    const { token } = req.headers
+    console.log(req.headers)
     console.log("token from auth:"+token)
 try{
 if (!token) {

@@ -28,6 +28,20 @@ const userReducer = (state = initialState, action) => {
         case "SIGN_IN":
              return [action.user.data, ...initialState]
 
+        case "LOG_OUT":
+             localStorage.removeItem("token")
+             return {
+                tokens : null,
+                userName: null,
+                userEmail: null,
+                userContact: null,
+                userPassword: null,
+                _id: null
+             }
+
+        case "VIEW_PROFILE":
+            
+
         default:
             return state
     }
