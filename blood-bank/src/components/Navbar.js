@@ -11,19 +11,23 @@ import { logOut } from "../Store/Actions/action"
 export const Navbar = () => {
     const classes = useStyles();
     const [ selectTab, setSelectTab ] = useState(0)
-     const isLoggedIn = useSelector(state => state.auth.login)
-     console.log("Logged in: "+isLoggedIn)
+     //const isLoggedIn = useSelector(state => state.auth.login)
+     const user = useSelector( state => state.user._userId )
+     const donor = useSelector( state => state.donor._donorId)
+    //  const user = useSelector(state => state.user)
+     console.log("user id from navbar",user)
+     console.log("donor id from navbar",donor)
     const dispatch = useDispatch()
 
     const logoutHandler = () => {
         dispatch(logOut())
-        dispatch(setLogout())
+        //dispatch(setLogout())
     }
 
     //const isLoggedIn = true
     return(
         <>
-        {!isLoggedIn &&
+        {!user && !donor &&
         <>
         <AppBar position="static" sx={{backgroundColor : "black",height : "120px"}}>
             {/* hello */}
@@ -53,8 +57,8 @@ export const Navbar = () => {
         </>
 }
 
-{isLoggedIn && 
-<>
+{(user || donor) && 
+(<>
         <AppBar position="static" sx={{backgroundColor : "red",height : "60px"}}>
             <Toolbar>
                 {/* <IconButton size="large" edge="start" color="inherit" aria-label="logo">
@@ -75,6 +79,9 @@ export const Navbar = () => {
                     <Tab LinkComponent={Link} to='/camps'label="Blood Camps" />
                     <Tab LinkComponent={Link} to='/about' label="About us" />
                     <Tab LinkComponent={Link} to='/search' label="Search" />
+                    <Tab LinkComponent={Link} to='/my-profile' label="My Profile" />
+                    <Tab LinkComponent={Link} to='/donor-profile' label="My Profile" />
+
                     {/* <Tab LinkComponent={Link} to='/' label="Logout" /> */}
                     <Link to="/" style={{ textDecoration: 'none' }}>
                     <Box sx={{color : "black", border:3, borderRadius:2, marginTop:"18%", marginLeft:"10%"}}>
@@ -86,7 +93,7 @@ export const Navbar = () => {
                 </Stack>
             </Toolbar>
         </AppBar>
-        </>
+        </>)
 }
         </>
     )

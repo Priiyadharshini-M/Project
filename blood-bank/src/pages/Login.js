@@ -2,21 +2,24 @@ import { Box, TextField, Button, Typography } from "@mui/material"
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
-import { setLogin } from "../Store/Actions/authAction"
-import { logIn } from "../Store/Actions/action"
+//import { setLogin } from "../Store/Actions/authAction"
+import { logIn, donorLogIn } from "../Store/Actions/action"
 
 export const Login= () => {
     const navigate=useNavigate()
     const dispatch = useDispatch()
     const user = useSelector(state => state.user)
-    console.log(user)
+    console.log("from login",user)
+    const donor = useSelector(state => state.donor)
+    console.log("from donor login",donor._donorId)
+    //_donorId
     const[isUser,setIsUser] = useState(true)
     const[loginCredentials,setLoginCredentials] = useState({
         userEmail : '',
         userPassword : ''
     })
     const[donorCredentials,setDonorCredentials] = useState({
-        userEmail : '',
+        email : '',
         password : ''
     })
     const changeHandler=(event)=>{
@@ -29,17 +32,20 @@ export const Login= () => {
     {
         event.preventDefault()
         dispatch(logIn(loginCredentials))
-        dispatch(setLogin())
+        //dispatch(setLogin())
+        //if(user._userId)
         navigate('/')
     }
     const submitDonorHandler=(event)=>
     {
         event.preventDefault()
-        // dispatch(logIn(loginCredentials))
-        // dispatch(setLogin())
-        //navigate('/')
+        dispatch(donorLogIn(donorCredentials))
+        //dispatch(setLogin())
+        console.log("donorr:"+donor._donorId)
+        //if(donor._donorId)
+        navigate('/')
     }
-    if(user._id) return navigate('/')
+    //if((user._id)||(donor._id)) return navigate('/')
 
     return(
             <>
@@ -63,7 +69,7 @@ export const Login= () => {
             { !isUser && 
             <>
             <form onSubmit={submitDonorHandler}>
-                <TextField type="email" variant="standard" name="userEmail" value={donorCredentials.userName} onChange={changeDonorHandler} required label="Donor email" sx={{marginLeft:"15%",marginTop:"5%",width:"70%"}}/>
+                <TextField type="email" variant="standard" name="email" value={donorCredentials.email} onChange={changeDonorHandler} required label="Donor email" sx={{marginLeft:"15%",marginTop:"5%",width:"70%"}}/>
                 <TextField type="password" variant="standard" name="password" value={donorCredentials.password} onChange={changeDonorHandler} required label="Donor password" sx={{marginLeft:"15%",marginTop:"5%",width:"70%"}}/>
     
                 <Button color="inherit" type="submit" sx={{width:"20%", marginLeft:"40%", marginTop:"10%", backgroundColor:"black", color:"green", border:3}}>Log in</Button>

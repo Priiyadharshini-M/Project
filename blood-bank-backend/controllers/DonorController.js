@@ -1,6 +1,7 @@
 let Donor = require('../models/Donor')
 const { donorValidation } = require('../helpers/ValidationSchema')
 const { sendDonorToken } = require('../util/JwtToken')
+const bcryptjs = require('bcryptjs');
 
 const viewDonors = async(req,res) => {
     let donor
@@ -16,16 +17,25 @@ const viewDonors = async(req,res) => {
 
 const addDonor = async(req,res)=>
 {
-
+    console.log("adding donor")
     let donor
     try{
-
-        const result = await donorValidation.validateAsync(req.body,{abortEarly : false})
+        console.log(req.body)
+        let options = { abortEarly : false }
+        //const result = await userValidation.validateAsync(req.body,{abortEarly : false})
+        const result = await donorValidation.validateAsync(req.body, options)
+        // console.log("donor validation"+JSON.stringify(result))
+        // const donorResult = JSON.stringify(result)
+        // console.log(donorResult)
+        console.log(result)
+        console.log(result.email)
         const { userName, address, city, contact, bloodGroup, gender, age, password, email, lastDonateDate, allergies, disease } = result
         donor = await Donor.findOne({ email : result.email })
+        console.log("donor"+donor)
         if(donor) 
            throw "This mail id has already been registered for Donor"
         const hashedPassword = await bcryptjs.hash(password, 10)
+        console.log("password"+hashedPassword)
         donor = new Donor({
             userName, 
             address, 
@@ -41,7 +51,8 @@ const addDonor = async(req,res)=>
             disease
         })
         await donor.save()
-        sendDonorToken(donor,201,res)
+        return res.status(200).json({ donor })
+        //sendDonorToken(donor,201,res)
     }
     catch(err) {
         if(err.isJoi === true)
@@ -63,11 +74,12 @@ const loginDonor = async(req,res,next) => {
     try{
         // const loginResult = await loginValidationSchema.validateAsync(req.body,{abortEarly : false})
         donor = await Donor.findOne({email : req.body.email})
+        console.log("from login",donor)
         if(donor == null) 
            throw "No account exists with this email id"
         if(! bcryptjs.compareSync(req.body.password, donor.password))
             throw "Incorrect Password"
-        return res.status(201).json({message : "Succesfully logged in",donor})
+        sendDonorToken(donor,201,res)
     }
     catch(err){
         return res.status(404).json({errorMessage : err})
@@ -110,7 +122,7 @@ const updateDonor = async(req,res)=>
         {
         const updateResult = await donorValidation.validateAsync(req.body,{abortEarly : false})
         const { userName, address, city, password, bloodGroup, gender, age, contact, email, lastDonateDate, allergies, disease } = updateResult
-        const hashedPassword = await bcrypt.hash(password,10) 
+        const hashedPassword = await bcryptjs.hash(password,10) 
         donor = await Donor.findByIdAndUpdate(req.params.id,{
             password : hashedPassword,
             userName,
@@ -148,9 +160,12 @@ const updateDonor = async(req,res)=>
 
 const viewSpecificDonors = async(req,res) => {
     let donor
+    console.log(req.params,"...")
     try{
-        donor = await Donor.find({ bloodGroup: req.params.bloodGroup, city:req.params.city })
-        return res.status(200).json({ donor:donor.userName })
+        donor = await Donor.find({ bloodGroup: req.body.bloodGroup, city:req.body.city })
+        //donor=await Donor.find( { "donor.bloodGroup": req.params.bloodGroup, "donor.city": req.params.city } )
+        console.log(donor)
+        return res.status(200).json({ donor })
     }
     catch(err) {
         return res.status(404).json({ message : err.message })

@@ -9,9 +9,7 @@ const sendToken = (user, statusCode, res) => {
     };
     console.log("token:"+token)
     return res.status(statusCode).cookie("token", token, options).json({
-      success: true,
-      user,
-      token
+      accessToken : token
     });
   };
   
@@ -25,25 +23,24 @@ const sendToken = (user, statusCode, res) => {
     };
   
     return res.status(statusCode).cookie("adminToken", token, options).json({
-      success: true,
-      admin,
-      token,
+      accessToken:token,
     });
   };
 
   const sendDonorToken = (donor, statusCode, res) => {
+    console.log("entered send donor")
     const token = donor.getJWTToken();
+    console.log("token for donor:"+token)
     const options = {
       expires: new Date(
         Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000 
       ),
       httpOnly: true
     };
-  
+
+    // console.log("token for donor:"+token)
     return res.status(statusCode).cookie("donorToken", token, options).json({
-      success: message,
-      donor,
-      token,
+      accessToken : token,
     });
   };
   

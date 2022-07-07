@@ -13,7 +13,7 @@ const userSchema = new Schema({
         required : true
     },
     userContact:{
-        type : Number,
+        type : String,
         required:true,
         trim:true,
         minlength:10,

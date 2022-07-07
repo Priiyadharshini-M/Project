@@ -1,6 +1,6 @@
 import React from 'react'
-import { Box, TextField, Button, TextareaAutosize, Typography } from "@mui/material"
-import { useState } from "react"
+import { Box, TextField, Button, Typography } from "@mui/material"
+//import { useState } from "react"
 import { useNavigate  } from "react-router-dom"
 import { useDispatch } from "react-redux"
 import { addCamp, updateCamp } from "../Store/Actions/action"
@@ -35,11 +35,11 @@ export const AddCamp = ({ campDetails, setCampDetails }) => {
             console.log(campDetails.startDate)
             console.log(campDetails.endDate)
             dispatch(updateCamp(updatedCamp, id))
-            navigate('/camps')
+            navigate('/admin/camps')
         }
         else{
         dispatch(addCamp(campDetails))
-        navigate('/camps')
+        navigate('/admin/camps')
         }
     }
 

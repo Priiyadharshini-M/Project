@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+const jwt =  require("jsonwebtoken");
+const { date } = require('@hapi/joi');
 const Schema = mongoose.Schema;
 const donorSchema = new Schema({
     userName : {
@@ -16,8 +18,7 @@ const donorSchema = new Schema({
     password : {
         type : String,
         required : true,
-        minlength : 6,
-        maxlength : 15
+        minlength : 6
     },
     address : {
         type : String,
@@ -28,7 +29,7 @@ const donorSchema = new Schema({
         required : true
     },
     contact : {
-        type : Number,
+        type : String,
         required : true,
         trim : true,
         minlength : 10,
@@ -68,6 +69,13 @@ const donorSchema = new Schema({
 {
     timestamps : true
 })
+
+donorSchema.methods.getJWTToken = function (){
+    console.log("entered get jwt token")
+    return jwt.sign({id:this._id},process.env.JWT_SECRET,{
+        expiresIn:'12h',
+    });
+};
 
 const Donor = mongoose.model('Donor',donorSchema)
 module.exports = Donor

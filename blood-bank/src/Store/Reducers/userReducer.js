@@ -1,28 +1,34 @@
 import jwtDecode from 'jwt-decode'
+
+const profileState={
+    profile : ''
+}
 const initialState = {
-    tokens : localStorage.getItem("token"),
-    userName: null,
-    userEmail: null,
-    userContact: null,
-    userPassword: null,
-    _id: null
+    token : localStorage.getItem("token"),
+    // userName: null,
+    // userEmail: null,
+    // userContact: null,
+    // userPassword: null,
+    //profile : '',
+    _userId: ''
 }
 
-const userReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action) => {
+    console.log("entered user reducer")
     switch(action.type) {
         case "USER_LOADED":
         case "LOG_IN":
-            const user = jwtDecode(action.tokens)
+            const user = jwtDecode(action.token)
             // console.log("2nd token:"+action.tokens)
-            // console.log("name:"+user)
+             console.log("user id from user reducer : "+user.id)
             return {
                 ...initialState, 
-                tokens: action.tokens,
-                userName: user.userName,
-                userEmail: user.userEmail,
-                userContact: user.userContact,
-                userPassword: user.userPassword,
-                _id: user._id
+                token: action.token,
+                // userName: user.userName,
+                // userEmail: user.userEmail,
+                // userContact: user.userContact,
+                // userPassword: user.userPassword,
+                _userId: user.id
              }
 
         case "SIGN_IN":
@@ -31,20 +37,29 @@ const userReducer = (state = initialState, action) => {
         case "LOG_OUT":
              localStorage.removeItem("token")
              return {
-                tokens : null,
-                userName: null,
-                userEmail: null,
-                userContact: null,
-                userPassword: null,
-                _id: null
+                //...initialState,
+                token : '',
+                _userId: ''
              }
-
-        case "VIEW_PROFILE":
-            
 
         default:
             return state
     }
 }
 
-export default userReducer
+export const userprofileReducer = (state = profileState, action) => {
+    switch(action.type){
+        case "VIEW_PROFILE":
+            return {
+                ...profileState,
+                profile : action.payload
+            }
+        case 'UPDATE_PROFILE' : 
+            return {
+                ...profileState,
+                profile : action.payload
+            }
+        default :
+            return state
+    }
+}

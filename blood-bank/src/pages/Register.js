@@ -10,7 +10,7 @@ export const Register=()=>
 {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const user = useSelector(state => state.user)
+    const user = useSelector(state => state.user) //state.user._userId
     console.log(user)
     const[isUser,setIsUser] = useState(true)
     const [registerCredentials, setRegisterCredentials] = useState({
@@ -29,7 +29,7 @@ export const Register=()=>
         event.preventDefault()
         dispatch(signIn(registerCredentials))
 
-        //if(user._id) return
+        if(user._userId) return
         navigate('/login')
     }
     return(

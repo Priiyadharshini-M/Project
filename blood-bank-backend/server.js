@@ -22,10 +22,12 @@ mongoose.connect(uri,{
 const { campRouter } = require('./routes/CampRouter')
 const { userRouter } = require('./routes/UserRouter')
 const { donorRouter } = require('./routes/DonorRouter')
+const { adminRouter } = require('./routes/AdminRouter')
 //using router files
 app.use('/camps',campRouter)
 app.use('/users',userRouter)
 app.use('/donors',donorRouter)
+app.use('/admin',adminRouter)
 
 app.listen(port,()=>
 {

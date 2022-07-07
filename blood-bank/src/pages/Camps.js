@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { updateCamp, viewCamps, deleteCamp } from "../Store/Actions/action";
 import moment from 'moment'
 
 import { makeStyles } from "@material-ui/styles";
-import { Typography, ButtonGroup, Button, TextField } from "@mui/material";
+import { Typography, ButtonGroup, Button } from "@mui/material";
 
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -27,6 +27,10 @@ const useStyles = makeStyles({
 });
 
 export const Camps = ({ setCampDetails }) => {
+
+  const location = useLocation()
+  //console.log(location.pathname)
+  const paths = location.pathname.split('/')
   // const [campDetails, setCampDetails] = useState({
   //   hospitalName:'',
   //   address:'',
@@ -39,40 +43,21 @@ export const Camps = ({ setCampDetails }) => {
   const dispatch = useDispatch();
   
   const camps = useSelector((state) => state.camp)
-  console.log(camps)
+  console.log("camps are",camps)
 
   useEffect(() => {
     dispatch(viewCamps())
   },[dispatch])
-  //const auth = useSelector((state) => state.auth);
-
-//   const handleOnUpdateClick = (id) => {
-//     const foundTodo = todos.find((todo) => todo._id === id);
-//     setTodo({ ...foundTodo });
-//     window.scrollTo({
-//         top: 0,
-//         left: 0,
-//         behavior: 'smooth'
-//       });
-//   };
-
-//   const handleDelete = (id) => {
-//     dispatch(deleteTodo(id));
-//   };
-
-//   const handleCheck = (id) => {
-//     dispatch(checkTodo(id));
-//   };
-
+  
 const addCampHandler = () =>
 {
-    navigate('/addCamp')
+    navigate('/admin/addCamp')
 }
 const updateCampHandler = (id) =>
 {
   const foundCamp = camps.find((camp) => camp._id === id);
     setCampDetails({ ...foundCamp });
-  navigate('/addCamp')
+  navigate('/admin/addCamp')
   //setCampDetails(camps)
   window.scrollTo({
     top:0,
@@ -84,14 +69,16 @@ const updateCampHandler = (id) =>
 const deleteCampHandler = (id) =>
 {
   dispatch(deleteCamp(id))
-  navigate('/camps')
+  navigate('/admin/camps')
 }
 
   return (
     <>
+    { paths.includes('admin') &&
     <Button onClick={() => addCampHandler()} sx={{marginLeft : "50%", marginTop : "2%", border : "2px solid blue", backgroundColor : "blue", color : "black" }} >
     <AddIcon></AddIcon> Add camp
     </Button>
+    }
     { camps && camps.map((camp) => {
       return(
         <div key={camp._id} >
@@ -111,6 +98,7 @@ const deleteCampHandler = (id) =>
             Added: {moment(camp.date).fromNow()}
           </Typography>
         </div>
+        { paths.includes('admin') &&
         <div key={camp._id}>
             <ButtonGroup>
               <Button onClick={() => updateCampHandler(camp._id)}>
@@ -121,6 +109,7 @@ const deleteCampHandler = (id) =>
               </Button>
             </ButtonGroup>
         </div>
+        }
       </div>
       </div>
       )

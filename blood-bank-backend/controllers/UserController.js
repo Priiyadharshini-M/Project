@@ -8,6 +8,7 @@ const registerUser = async(req,res) => {
     let user
     try{
         const result = await userValidation.validateAsync(req.body,{abortEarly : false})
+        console.log("user controller",result)
         const { userName, userAddress, userContact, userPassword, userEmail } = result
         user = await User.findOne({userEmail : result.userEmail})
         if(user) 

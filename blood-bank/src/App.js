@@ -7,12 +7,19 @@ import { Login } from './pages/Login'
 import {Register} from './pages/Register'
 import { Camps } from './pages/Camps'
 import { AddCamp } from './pages/AddCamp'
-import { AdminCamps } from './pages/AdminCamps'
 import { AdminDonors } from './pages/AdminDonors'
 import { AdminHome } from './pages/AdminHome'
+import { MyProfile } from './pages/MyProfile'
+import { DonorProfile } from './pages/DonorProfile'
 import  AdminLogin  from './pages/AdminLogin'
-import { loadUser } from './Store/Actions/action'
-import { useDispatch } from 'react-redux';
+import { loadUser, loadAdmin, loadDonor } from './Store/Actions/action'
+import { useDispatch, useSelector } from 'react-redux';
+import EditProfile from './pages/EditMyProfile';
+import EditDonorProfile from './pages/EditDonorProfile';
+import AdminProfile from './pages/AdminProfile';
+import AdminEditProfile from './pages/EditAdminProfile';
+import { Search } from './pages/Search';
+import FilterDonor from './pages/FilterDonor'
 
 
 function App() {
@@ -23,9 +30,16 @@ function App() {
     startDate:'',
     endDate:''})
 
+  const user = useSelector( state => state.user._userId )
+  const donor = useSelector( state => state.donor._donorId )
+  console.log("from app.js user:"+user)
+  console.log("from app.js donor:"+donor)
+
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(loadUser())
+    dispatch(loadAdmin())
+    dispatch(loadDonor())
   },[dispatch])
 
   return (
@@ -37,12 +51,21 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/camps' element={<Camps setCampDetails={setCampDetails}/>} />
-        <Route path='/addCamp' element={<AddCamp campDetails={campDetails} setCampDetails={setCampDetails}/>} />
+        <Route path='/my-profile' element={<MyProfile />} /> 
+        <Route path='/donor-profile' element={<DonorProfile />} /> 
+        <Route path='/my-profile/edit-profile' element={<EditProfile />} />
+        <Route path='/my-profile/edit-donorprofile' element={<EditDonorProfile />} />
+        <Route path='/search' element={<Search />} />
+        <Route path='/search/donor/view/:donorId' element={<FilterDonor />} />
+        <Route path='/admin/my-profile' element={<AdminProfile />} />
+        <Route path='/admin/my-profile/edit-profile' element={<AdminEditProfile />} />
+        {/* <Route path='/addCamp' element={<AddCamp campDetails={campDetails} setCampDetails={setCampDetails}/>} /> */}
 
             <Route path='/admin' element={<AdminHome />}></Route>
             <Route path='/admin/home' element={<AdminHome />}></Route>
             <Route path='/admin/login' element={<AdminLogin />}></Route>
             <Route path='/admin/camps' element={<Camps setCampDetails={setCampDetails}/>}></Route>
+            <Route path='/admin/addCamp' element={<AddCamp campDetails={campDetails} setCampDetails={setCampDetails}/>} />
             <Route path='/admin/donors' element={<AdminDonors />}></Route>
 
       </Routes>
