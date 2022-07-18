@@ -29,23 +29,25 @@ export const DonorRegister = () => {
     const changeHandler = (event) => {
         setRegisterCredentials((prevState) => ({ ...prevState, [event.target.name]: event.target.value }))
     }
+
+    //register for donor 
     const submitHandler = (event) => {
         event.preventDefault()
         setFormError(() => (validate(registerCredentials))) //front end validation
         setIsSubmit(true)
-        if (Object.keys(formError).length === 0 && isSubmit) {
+        if (Object.keys(formError).length === 1 && isSubmit) {
             dispatch(donorSignIn(registerCredentials))
-
-            if (donor.msg === '') return
-            navigate('/login')
         }
     }
 
     useEffect(() => {
-        if (Object.keys(formError).length === 0 && isSubmit) {
-            console.log(registerCredentials)
+        if (donor.donorsuccess) {
+            alert("Successfully signed in")
+            navigate('/login')
         }
-    })
+    }, [donor.donorsuccess])
+
+    //validate input fields
     const validate = (values) => {
         const errors = {}
         const emailRegex = /^([a-z]+[\.-\d]*)@([a-z-]+)\.([a-z\-]{2,8})(\.[a-z]{2,8})?$/
@@ -107,13 +109,13 @@ export const DonorRegister = () => {
         if (!values.allergies) {
             errors.allergies = "**This field is required"
         }
-        else if (values.allergies === "No") {
-            errors.age = "**You are not eligible to donate blood"
+        else if (values.allergies === "Yes") {
+            errors.allergies = "**You are not eligible to donate blood"
         }
         if (!values.disease) {
             errors.disease = "**This field is required"
         }
-        else if (values.disease === "No") {
+        else if (values.disease === "Yes") {
             errors.disease = "**You are not eligible to donate blood"
         }
         if (!values.lastDonateDate) {
@@ -212,7 +214,7 @@ export const DonorRegister = () => {
                         </Select>
                     </FormControl>
                     <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.disease}</Typography>
-                    <Typography sx={{ marginLeft: "15%", marginTop: "5%", width: "70%", color: 'red' }}>{donor.msg}</Typography>
+                    <Typography sx={{ marginLeft: "15%", marginTop: "5%", width: "70%", color: 'red' }}>{donor.donorSigninMsg}</Typography>
                     <Button color="inherit" type="submit" sx={{ width: "20%", marginLeft: "40%", marginTop: "10%", backgroundColor: "black", color: "green", border: 3 }}>Register</Button>
                 </Box>
             </form>

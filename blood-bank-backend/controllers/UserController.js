@@ -3,6 +3,7 @@ const bcryptjs = require('bcryptjs');
 const { userValidation } = require('../validation/ValidationSchema');
 const { sendToken } = require('../util/JwtToken');
 
+//register user
 const registerUser = async (req, res) => {
     let user
     try {
@@ -38,6 +39,7 @@ const registerUser = async (req, res) => {
 
 }
 
+//login user
 const loginUser = async (req, res, next) => {
     let user
     try {
@@ -54,6 +56,7 @@ const loginUser = async (req, res, next) => {
 }
 
 
+//view particular user profile
 const viewProfile = async (req, res, next) => {
     let user
     try {
@@ -61,11 +64,11 @@ const viewProfile = async (req, res, next) => {
         return res.status(200).json({ user })
     }
     catch (err) {
-        return res.status(404).json({ message: err.message })
+        return res.status(404).json({ errorMessage: err })
     }
-    return res.status(404).json({ message: "No users found" })
 }
 
+//update user profile
 const updateProfile = async (req, res) => {
     let user
     try {
@@ -102,6 +105,7 @@ const updateProfile = async (req, res) => {
     }
 }
 
+//delete user profile
 const deleteProfile = async (req, res) => {
     let user
     try {
@@ -115,8 +119,7 @@ const deleteProfile = async (req, res) => {
         return res.status(200).json({ message: "Deleted", user })
     }
     catch (err) {
-        return res.status(404).json({ message: err.message })
+        return res.status(404).json({ errorMessage: err })
     }
-    return res.status(400).json({ message: "Can't delete Profile", camps })
 }
 module.exports = { registerUser, viewProfile, updateProfile, deleteProfile, loginUser }

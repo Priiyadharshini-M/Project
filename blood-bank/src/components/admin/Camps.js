@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from 'react-router-dom'
-import { updateCamp, viewCamps, deleteCamp } from "../../redux/actions/campAction";
+import { viewCamps, deleteCamp } from "../../redux/actions/campAction";
 import moment from 'moment'
 
 import { makeStyles } from "@material-ui/styles";
@@ -26,7 +26,7 @@ const useStyles = makeStyles({
   }
 });
 
-export const Camps = ({ setCampDetails }) => {
+export const Camps = () => {
 
   const location = useLocation()
   const paths = location.pathname.split('/')
@@ -35,23 +35,30 @@ export const Camps = ({ setCampDetails }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch();
 
-  const camps = useSelector((state) => state.camp)
+  const camps = useSelector((state) => state.campDetails.camp)
+  const { campDeleteSuccess } = useSelector((state) => state.camp)
 
   useEffect(() => {
-    dispatch(viewCamps())
+    dispatch(viewCamps()) //view all camps
   }, [dispatch])
+
+  useEffect(() => {
+    if (campDeleteSuccess) {
+      alert("Successfully deleted")
+      navigate('/admin/camps')
+    }
+  }, [campDeleteSuccess])
 
   const addCampHandler = () => {
     navigate('/admin/addCamp')
   }
+
   const updateCampHandler = (id) => {
-    const foundCamp = camps.find((camp) => camp._id === id);
-    setCampDetails({ ...foundCamp });
-    navigate('/admin/addCamp')
+    navigate(`/admin/editCamp/${id}`)
   }
+
   const deleteCampHandler = (id) => {
-    dispatch(deleteCamp(id))
-    navigate('/admin/camps')
+    dispatch(deleteCamp(id)) //to delete particular camp
   }
 
   return (

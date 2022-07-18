@@ -1,5 +1,6 @@
 const joi = require('@hapi/joi')
 
+//joi validation for blood camps
 const bloodCampValidation = joi.object({
     hospitalName: joi.string()
         .min(3)
@@ -22,6 +23,7 @@ const bloodCampValidation = joi.object({
 
 })
 
+//joi validation for users
 const userValidation = joi.object({
     userName: joi.string()
         .min(3)
@@ -44,6 +46,7 @@ const userValidation = joi.object({
 
 })
 
+//joi validation for donors
 const donorValidation = joi.object({
     userName: joi.string()
         .min(3)
@@ -88,6 +91,7 @@ const donorValidation = joi.object({
 
 })
 
+//joi validation for admin
 const adminValidation = joi.object({
     adminName: joi.string()
         .min(3)

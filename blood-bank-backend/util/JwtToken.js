@@ -1,3 +1,4 @@
+//token for user in cookie
 const sendToken = (user, statusCode, res) => {
   const token = user.getJWTToken();
   const options = {
@@ -8,9 +9,10 @@ const sendToken = (user, statusCode, res) => {
   };
   return res.status(statusCode).cookie("token", token, options).json({
     accessToken: token
-  });I
+  }); I
 };
 
+//token for admin in cookie
 const sendAdminToken = (admin, statusCode, res) => {
   const token = admin.getJWTToken();
   const options = {
@@ -25,6 +27,7 @@ const sendAdminToken = (admin, statusCode, res) => {
   });
 };
 
+//token for donor in cookie
 const sendDonorToken = (donor, statusCode, res) => {
   const token = donor.getJWTToken();
   const options = {

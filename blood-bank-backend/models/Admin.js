@@ -15,6 +15,11 @@ const adminSchema = new Schema({
     adminPassword: {
         type: String,
         required: true
+    },
+    role: {
+        type: String,
+        default: "admin",
+        required: "fasle"
     }
 },
     {
@@ -22,7 +27,7 @@ const adminSchema = new Schema({
     })
 
 adminSchema.methods.getJWTToken = function () {
-    return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    return jwt.sign({ id: this._id, role: this.role }, process.env.JWT_SECRET, {
         expiresIn: '5h',
     });
 }

@@ -3,9 +3,8 @@ const { loginAdmin, deleteAdminProfile, viewAdminProfile, updateAdminProfile } =
 const { isAuthenticatedAdmin } = require('../middleware/auth')
 
 const adminRouter = express.Router()
-adminRouter.post('/login', loginAdmin) /**To login with email and password */
-adminRouter.delete('/:adminId', isAuthenticatedAdmin, deleteAdminProfile) /**To delete a particular profile */
-adminRouter.get('/:adminId', isAuthenticatedAdmin, viewAdminProfile) //isAuthenticatedAdmin
-adminRouter.put('/:adminId', isAuthenticatedAdmin, updateAdminProfile) //isAuthenticatedAdmin
-
+adminRouter.post('/login', loginAdmin) //admin login with email and password
+adminRouter.delete('/:adminId', isAuthenticatedAdmin, deleteAdminProfile) //delete admin profile
+adminRouter.get('/:adminId', isAuthenticatedAdmin, viewAdminProfile) //view particular admin profile
+adminRouter.put('/:adminId', isAuthenticatedAdmin, updateAdminProfile) //update admin profile
 module.exports = { adminRouter }

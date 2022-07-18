@@ -4,11 +4,11 @@ const User = require("../models/User")
 const Donor = require("../models/Donor")
 const Admin = require("../models/Admin")
 
-
+// to check whether user is authenticated using token in headers
 const isAuthenticatedUser = async (req, res, next) => {
   const token = req.headers.authorization.split(' ')[1]
   try {
-    if (!token) {
+    if (token === 'null') {
       next()
     }
     else {
@@ -28,14 +28,14 @@ const isAuthenticatedUser = async (req, res, next) => {
   }
 }
 
+// to check whether donor is authenticated using token in headers
 const isAuthenticatedDonor = async (req, res, next) => {
   if (res.locals.skipMiddleware1) {
     return next()
   }
   const donorToken = req.headers.authorization.split(' ')[2]
-
   try {
-    if (!donorToken) {
+    if (donorToken === 'null') {
       next()
     }
     else {
@@ -53,13 +53,14 @@ const isAuthenticatedDonor = async (req, res, next) => {
   }
 }
 
+// to check whether admin is authenticated using token in headers
 const isAuthenticatedAdmin = async (req, res, next) => {
   if (res.locals.skipMiddleware2) {
     return next()
   }
-  const { adminToken } = req.cookies;
+  const adminToken = req.headers.authorization.split(' ')[3]
   try {
-    if (!adminToken)
+    if (adminToken === 'null')
       throw "You dont have access to this page , please login"
     const decodedData = jwt.verify(adminToken, process.env.JWT_SECRET)
     req.user = await Admin.findById(decodedData.id)

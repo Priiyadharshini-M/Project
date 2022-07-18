@@ -2,6 +2,7 @@
 const { Camp } = require('../models/BloodCamp')
 const { bloodCampValidation } = require('../validation/ValidationSchema')
 
+//view all camps
 const viewCamps = async (req, res) => {
     let camps
     try {
@@ -9,11 +10,11 @@ const viewCamps = async (req, res) => {
         return res.status(200).json({ camps })
     }
     catch (err) {
-        return res.status(404).json({ message: err.message })
+        return res.status(404).json({ errorMessage: err })
     }
-    return res.status(404).json({ message: "No camps found" })
 }
 
+//add new camp
 const addCamp = async (req, res) => {
     let camp
     try {
@@ -42,6 +43,7 @@ const addCamp = async (req, res) => {
     }
 }
 
+//view particular camp
 const viewCamp = async (req, res) => {
     let camps
     try {
@@ -49,11 +51,11 @@ const viewCamp = async (req, res) => {
         return res.status(200).json({ camps })
     }
     catch (err) {
-        return res.status(404).json({ message: err.message })
+        return res.status(404).json({ errorMessage: err })
     }
-    return res.status(404).json({ message: "No camp found" })
 }
 
+//delete camp
 const deleteCamp = async (req, res) => {
     let camps
     try {
@@ -61,11 +63,11 @@ const deleteCamp = async (req, res) => {
         return res.status(200).json({ message: "Deleted", camps })
     }
     catch (err) {
-        return res.status(404).json({ message: err.message })
+        return res.status(404).json({ errorMessage: err })
     }
-    return res.status(400).json({ message: "Can't delete camp", camps })
 }
 
+//update camp details
 const updateCamp = async (req, res) => {
     let camp
     try {

@@ -3,6 +3,7 @@ const { donorValidation } = require('../validation/ValidationSchema')
 const { sendDonorToken } = require('../util/JwtToken')
 const bcryptjs = require('bcryptjs');
 
+//view all donors
 const viewDonors = async (req, res) => {
     let donor
     try {
@@ -10,11 +11,11 @@ const viewDonors = async (req, res) => {
         return res.status(200).json({ donor })
     }
     catch (err) {
-        return res.status(404).json({ message: err.message })
+        return res.status(404).json({ errorMessage: err })
     }
-    return res.status(404).json({ message: "No donors found" })
 }
 
+//register donor
 const addDonor = async (req, res) => {
     let donor
     try {
@@ -56,6 +57,8 @@ const addDonor = async (req, res) => {
         return res.status(400).json({ errorMessage: err })
     }
 }
+
+//login donor
 const loginDonor = async (req, res, next) => {
     let donor
     try {
@@ -70,6 +73,8 @@ const loginDonor = async (req, res, next) => {
         return res.status(404).json({ errorMessage: err })
     }
 }
+
+//view particular donor
 const viewDonor = async (req, res) => {
     let donor
     try {
@@ -77,11 +82,11 @@ const viewDonor = async (req, res) => {
         return res.status(200).json({ donor })
     }
     catch (err) {
-        return res.status(404).json({ message: err.message })
+        return res.status(404).json({ errorMessage: err })
     }
-    return res.status(404).json({ message: "No Donor found" })
 }
 
+//delete donor profile
 const deleteDonor = async (req, res) => {
     let donor
     try {
@@ -89,11 +94,11 @@ const deleteDonor = async (req, res) => {
         return res.status(200).json({ message: "Deleted", donor })
     }
     catch (err) {
-        return res.status(404).json({ message: err.message })
+        return res.status(404).json({ errorMessage: err })
     }
-    return res.status(400).json({ message: "Can't delete donor", donor })
 }
 
+//update donor
 const updateDonor = async (req, res) => {
 
     let donor
@@ -138,6 +143,7 @@ const updateDonor = async (req, res) => {
     }
 }
 
+//filter donors using blood group and city
 const viewSpecificDonors = async (req, res) => {
     let donor
     try {
@@ -145,8 +151,19 @@ const viewSpecificDonors = async (req, res) => {
         return res.status(200).json({ donor })
     }
     catch (err) {
-        return res.status(404).json({ message: err.message })
+        return res.status(404).json({ errorMessage: err })
     }
-    return res.status(404).json({ message: "No donors found" })
 }
-module.exports = { addDonor, viewDonor, viewDonors, deleteDonor, updateDonor, viewSpecificDonors, loginDonor }
+
+//to get count of all blood groups
+const donorCount = async (req, res) => {
+    let donor
+    try {
+        donor = await Donor.aggregate([{ "$group": { _id: "$bloodGroup", count: { $sum: 1 } } }])
+        return res.status(200).json({ donor })
+    }
+    catch (err) {
+        return res.status(404).json({ errorMessage: err })
+    }
+}
+module.exports = { addDonor, viewDonor, viewDonors, deleteDonor, updateDonor, viewSpecificDonors, loginDonor, donorCount }

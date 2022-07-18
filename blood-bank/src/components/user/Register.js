@@ -8,7 +8,8 @@ import { signIn } from "../../redux/actions/userAction"
 export const Register = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const user = useSelector(state => state.user)
+    let user = useSelector(state => state.user)
+    const { success, signInMsg } = user
     const [isUser, setIsUser] = useState(true)
     const [formError, setFormError] = useState({})
     const [isSubmit, setIsSubmit] = useState(false)
@@ -23,24 +24,26 @@ export const Register = () => {
 
     const changeHandler = (event) => {
         setRegisterCredentials((prevState) => ({ ...prevState, [event.target.name]: event.target.value }))
-        setFormError(() => (validate(registerCredentials)))
     }
+
+    //submit user details for registration
     const submitHandler = (event) => {
         event.preventDefault()
         setFormError(() => (validate(registerCredentials))) //front end validation
         setIsSubmit(true)
-        if (Object.keys(formError).length === 0 && isSubmit) {
-            dispatch(signIn(registerCredentials))
-            if (user.msg === '') return
-            navigate('/login')
+        if (Object.keys(formError).length === 1 && isSubmit) {
+            dispatch(signIn(registerCredentials)) //register action
         }
     }
 
     useEffect(() => {
-        if (Object.keys(formError).length === 0 && isSubmit) {
-            console.log(registerCredentials)
+        if (success) {
+            alert("Successfully signed in")
+            navigate('/login')
         }
-    })
+    }, [success])
+
+    //inputs validation
     const validate = (values) => {
         const errors = {}
         const emailRegex = /^([a-z]+[\.-\d]*)@([a-z-]+)\.([a-z\-]{2,8})(\.[a-z]{2,8})?$/
@@ -91,7 +94,7 @@ export const Register = () => {
                     <Box sx={{ border: 3, width: "50%", height: "950px", marginLeft: "25%", marginTop: "5%", borderRadius: 15 }}>
                         <Typography variant="h4" sx={{ marginLeft: "32%", marginTop: "5%", width: "70%" }}>User Registration</Typography>
 
-                        <TextField type="text" ariant="standard" name="userName" value={registerCredentials.userName} onChange={changeHandler} label="Name" sx={{ marginLeft: "15%", marginTop: "10%", width: "70%" }} />
+                        <TextField type="text" variant="standard" name="userName" value={registerCredentials.userName} onChange={changeHandler} label="Name" sx={{ marginLeft: "15%", marginTop: "10%", width: "70%" }} />
                         <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.userName}</Typography>
                         <TextField type="email" variant="standard" name="userEmail" value={registerCredentials.userEmail} onChange={changeHandler} label="Email Id" sx={{ marginLeft: "15%", marginTop: "10%", width: "70%" }} />
                         <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.userEmail}</Typography>
@@ -102,7 +105,7 @@ export const Register = () => {
                         <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.userPassword}</Typography>
                         <TextField type="password" variant="standard" name="confirmUserPassword" value={registerCredentials.confirmUserPassword} onChange={changeHandler} label="Confirm Password" sx={{ marginLeft: "15%", marginTop: "10%", width: "70%" }} />
                         <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.confirmUserPassword}</Typography>
-                        <Typography sx={{ marginLeft: "15%", marginTop: "5%", width: "70%", color: 'red' }}>{user.msg}</Typography>
+                        <Typography sx={{ marginLeft: "15%", marginTop: "5%", width: "70%", color: 'red' }}>{signInMsg}</Typography>
                         <Button color="inherit" type="submit" sx={{ width: "20%", marginLeft: "40%", marginTop: "10%", backgroundColor: "black", color: "green", border: 3 }}>Register</Button>
                     </Box>
                 </form>

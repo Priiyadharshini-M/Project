@@ -28,6 +28,11 @@ const userSchema = new Schema({
         type: String,
         required: true,
         lowercase: true
+    },
+    role: {
+        type: String,
+        default: "user",
+        required: false
     }
 
 },
@@ -37,7 +42,7 @@ const userSchema = new Schema({
 
 //jwt token
 userSchema.methods.getJWTToken = function () {
-    return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    return jwt.sign({ id: this._id, role: this.role }, process.env.JWT_SECRET, {
         expiresIn: '12h',
     });
 };

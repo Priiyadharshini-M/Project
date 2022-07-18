@@ -1,48 +1,62 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, TextField, Button, Typography } from "@mui/material"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useDispatch } from "react-redux"
-import { addCamp } from "../../redux/actions/campAction"
+import { updateCamp, viewCamp } from "../../redux/actions/campAction"
 import { useSelector } from 'react-redux'
 
-export const AddCamp = () => {
+export const EditCamp = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [formError, setFormError] = useState({})
     const [isSubmit, setIsSubmit] = useState(false)
-    const { campAddSuccess, campAddMsg } = useSelector((state) => state.camp)
+    const { id } = useParams()
+    const camp = useSelector((state) => state.camp.camps)
+    const campUpdateSuccess = useSelector((state) => state.camp)
+    const { hospitalName, campName, address, startDate, endDate } = camp
     const [campDetails, setCampDetails] = useState({
-        hospitalName: '',
-        campName: '',
-        address: '',
-        startDate: '',
-        endDate: ''
+        hospitalName,
+        campName,
+        address,
+        startDate,
+        endDate
     })
+
+    useEffect(() => {
+        dispatch(viewCamp(id)) //view particular camp details
+    }, [dispatch])
+
+    useEffect(() => {
+        if (camp)
+            setCampDetails({
+                hospitalName,
+                campName,
+                address,
+                startDate,
+                endDate
+            })
+        if (campUpdateSuccess.campUpdateSuccess) {
+            alert("Successfully updated")
+            navigate('/admin/camps')
+        }
+    }, [campUpdateSuccess.campUpdateSuccess, camp])
 
     const changeHandler = (event) => {
         setCampDetails((prevState) => ({ ...prevState, [event.target.name]: event.target.value }))
     }
 
-    //to add new camp details
-    const submitHandler = (event) => {
+    //to update existing camp details
+    const updateHandler = (event) => {
         event.preventDefault()
         setFormError(() => (validate(campDetails)))
         setIsSubmit(true)
         if (Object.keys(formError).length === 1 && isSubmit) {
-            dispatch(addCamp(campDetails))
+            dispatch(updateCamp(campDetails, id))
         }
     }
 
-    useEffect(() => {
-        if (campAddSuccess) {
-            alert("Successfully added camp")
-            navigate('/admin/camps')
-        }
-    }, [campAddSuccess])
-
-
-    //validate camp input fields
+    //validate camp input fiels
     const validate = (values) => {
         const errors = {}
         const nameRegex = /^[a-zA-Z ]{3,25}$/
@@ -66,13 +80,10 @@ export const AddCamp = () => {
             errors.endDate = "** Camp Ending date is required"
         }
         else if (values.endDate < Date.now()) {
-            errors.endDate = "**Camp Ending date can't be in past and today"
+            errors.endDate = "**Camp Ending date can't be in future and today"
         }
         if (!values.startDate) {
             errors.startDate = "** Camp Starting date is required"
-        }
-        else if (values.endDate < values.startDate) {
-            errors.startDate = "**Camp Ending date can't be in forward of start date"
         }
         return errors
 
@@ -80,7 +91,7 @@ export const AddCamp = () => {
 
 
     return (
-        <form onSubmit={submitHandler}>
+        <form onSubmit={updateHandler}>
             <Box sx={{ border: 3, width: "50%", height: "650px", marginLeft: "25%", marginTop: "5%", borderRadius: 15 }}>
                 <Typography variant="h4" sx={{ marginLeft: "32%", marginTop: "5%", width: "70%" }}>Camp details</Typography>
                 <TextField type="text" variant="standard" name="campName" value={campDetails.campName} onChange={changeHandler} label="Camp Name" sx={{ marginLeft: "15%", marginTop: "10%", width: "70%" }} />
@@ -93,7 +104,6 @@ export const AddCamp = () => {
                 <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.startDate}</Typography>
                 <TextField type="date" variant="standard" name="endDate" value={campDetails.endDate} onChange={changeHandler} label="End Date" sx={{ marginLeft: "15%", marginTop: "10%", width: "70%" }} />
                 <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.endDate}</Typography>
-                <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{campAddMsg}</Typography>
                 <Button color="inherit" type="submit" sx={{ width: "20%", marginLeft: "40%", marginTop: "10%", backgroundColor: "black", color: "green", border: 3 }}>Submit</Button>
             </Box>
         </form>

@@ -1,12 +1,20 @@
 import jwtDecode from 'jwt-decode'
 
 const profileState = {
-    profile: ''
+    profile: '',
+    viewProfileMsg: '',
+    deleteMsg: '',
+    updateMsg: '',
+    updateSuccess: false
 }
 const initialState = {
     token: sessionStorage.getItem("token"),
     _userId: '',
-    msg: ''
+    signInMsg: '',
+    loginMsg: '',
+    role: '',
+    success: false,
+    loginSuccess: false
 }
 
 
@@ -19,32 +27,42 @@ export const userReducer = (state = initialState, action) => {
                 ...initialState,
                 token: action.token,
                 _userId: user.id,
-                msg: ''
+                role: user.role,
+                loginSuccess: true
             }
 
         case "SIGN_IN":
-            return [action.user.data, ...initialState]
+            return {
+                success: true,
+                signInMsg: '',
+                token: '',
+                _userId: '',
+                role: ''
+            }
 
         case "LOG_OUT":
             sessionStorage.removeItem("token")
             return {
                 token: '',
                 _userId: '',
-                msg: ''
+                loginMsg: '',
+                role: '',
+                success: false,
+                loginSuccess: false
             }
 
         case "LOGIN_ERROR":
             return {
-                token: '',
-                _userId: '',
-                msg: action.msg
+                ...initialState,
+                loginMsg: action.msg,
+                loginSuccess: false
             }
 
         case "SIGNIN_ERROR":
             return {
-                token: '',
-                _userId: '',
-                msg: action.msg
+                ...initialState,
+                signInmsg: action.msg,
+                success: false
             }
 
         default:
@@ -57,13 +75,41 @@ export const userprofileReducer = (state = profileState, action) => {
         case "VIEW_PROFILE":
             return {
                 ...profileState,
-                profile: action.payload
+                profile: action.payload,
+                viewProfileMsg: ''
             }
 
         case 'UPDATE_PROFILE':
             return {
                 ...profileState,
-                profile: action.payload
+                profile: action.payload,
+                updateMsg: '',
+                updateSuccess: true
+            }
+
+        case 'DELETE_PROFILE':
+            return {
+                ...profileState,
+                deleteMsg: ''
+            }
+
+        case "VIEW_PROFILE_ERROR":
+            return {
+                ...profileState,
+                viewProfileMsg: action.msg
+            }
+
+        case "DELETE_ERROR":
+            return {
+                ...profileState,
+                deleteMsg: action.msg
+            }
+
+        case "UPDATE_ERROR":
+            return {
+                ...profileState,
+                updateMsg: action.msg,
+                updateSuccess: false
             }
 
         default:

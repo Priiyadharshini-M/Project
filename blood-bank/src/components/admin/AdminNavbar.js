@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { AppBar, Button, Box, Toolbar, Typography, Tabs, Tab, } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -8,8 +8,9 @@ const AdminHeader = () => {
     const [selectTab, setSelectTab] = useState(0)
     const admin = useSelector(state => state.admin)
     const dispatch = useDispatch()
+
     const logoutHandler = () => {
-        dispatch(deleteAdminToken())
+        dispatch(deleteAdminToken()) //to log out as admin
     }
     return (<>
         <AppBar position='static'>

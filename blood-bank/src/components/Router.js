@@ -18,41 +18,37 @@ import AdminEditProfile from '../components/admin/EditAdminProfile';
 import { Search } from '../components/donor/SearchDonor';
 import FilterDonor from '../components/donor/FilterDonor'
 import ProtectedRoute from '../components/pages/ProtectedRoute';
+import { About } from '../components/pages/About'
+import { EditCamp } from './admin/EditCamp';
 
 const Router = () => {
-  const [campDetails, setCampDetails] = useState({
-    hospitalName: '',
-    address: '',
-    campName: '',
-    startDate: '',
-    endDate: ''
-  })
-
-  const user = useSelector(state => state.user._userId)
-  const donor = useSelector(state => state.donor._donorId)
 
   return (
     <>
       <Routes>
+        {/* user and donor paths */}
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
-        <Route path='/camps' element={<ProtectedRoute><Camps setCampDetails={setCampDetails} /></ProtectedRoute>} />
-        <Route path='/my-profile' element={<MyProfile />} />
-        <Route path='/donor-profile' element={<DonorProfile />} />
-        <Route path='/my-profile/edit-profile' element={<EditProfile />} />
-        <Route path='/my-profile/edit-donorprofile' element={<EditDonorProfile />} />
-        <Route path='/search' element={<Search />} />
-        <Route path='/search/donor/view/:donorId' element={<FilterDonor />} />
-        <Route path='/admin/my-profile' element={<AdminProfile />} />
-        <Route path='/admin/my-profile/edit-profile' element={<AdminEditProfile />} />
+        <Route path='/camps' element={<ProtectedRoute role1="user" role2="donor"><Camps /></ProtectedRoute>} />
+        <Route path='/my-profile' element={<ProtectedRoute role1="user"><MyProfile /></ProtectedRoute>} />
+        <Route path='/donor-profile' element={<ProtectedRoute role2="donor"><DonorProfile /></ProtectedRoute>} />
+        <Route path='/my-profile/edit-profile' element={<ProtectedRoute role1="user"><EditProfile /></ProtectedRoute>} />
+        <Route path='/my-profile/edit-donorprofile' element={<ProtectedRoute role2="donor"><EditDonorProfile /></ProtectedRoute>} />
+        <Route path='/search' element={<ProtectedRoute role1="user" role2="donor"><Search /></ProtectedRoute>} />
+        <Route path='/search/donor/view/:donorId' element={<ProtectedRoute role1="user" role2="donor"><FilterDonor /></ProtectedRoute>} />
+        <Route path='/about' element={<About></About>} />
 
+        {/* admin paths */}
+        <Route path='/admin/my-profile' element={<ProtectedRoute role1="admin"><AdminProfile /></ProtectedRoute>} />
+        <Route path='/admin/my-profile/edit-profile' element={<ProtectedRoute role1="admin"><AdminEditProfile /></ProtectedRoute>} />
         <Route path='/admin' element={<AdminHome />}></Route>
         <Route path='/admin/home' element={<AdminHome />}></Route>
         <Route path='/admin/login' element={<AdminLogin />}></Route>
-        <Route path='/admin/camps' element={<Camps setCampDetails={setCampDetails} />}></Route>
-        <Route path='/admin/addCamp' element={<AddCamp campDetails={campDetails} setCampDetails={setCampDetails} />} />
-        <Route path='/admin/donors' element={<AdminDonors />}></Route>
+        <Route path='/admin/camps' element={<ProtectedRoute role1="admin"><Camps /></ProtectedRoute>}></Route>
+        <Route path='/admin/addCamp' element={<ProtectedRoute role1="admin"><AddCamp /></ProtectedRoute>} />
+        <Route path='/admin/editCamp/:id' element={<ProtectedRoute role1="admin"><EditCamp /></ProtectedRoute>} />
+        <Route path='/admin/donors' element={<ProtectedRoute role1="admin"><AdminDonors /></ProtectedRoute>}></Route>
       </Routes>
     </>
   )

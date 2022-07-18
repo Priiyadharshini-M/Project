@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { url } from "../../api/index"
 
+//to view user profile
 export const viewProfile = (id) => {
     return (dispatch) => {
         axios.get(`${url}/users/${id}`)
@@ -11,11 +12,33 @@ export const viewProfile = (id) => {
                 })
             })
             .catch(err => {
-                console.log(err.message)
+                dispatch({
+                    type: "VIEW_PROFILE_ERROR",
+                    msg: err.response.data.errorMessage
+                })
             })
     }
 }
 
+//to delete user profile
+export const deleteProfile = (id) => {
+    return (dispatch) => {
+        axios.delete(`${url}/users/${id}`)
+            .then(msg => {
+                dispatch({
+                    type: "DELETE_PROFILE"
+                })
+            })
+            .catch(err => {
+                dispatch({
+                    type: "DELETE_ERROR",
+                    msg: err.response.data.errorMessage
+                })
+            })
+    }
+}
+
+//to update existing user profile
 export const updateProfile = (userDetails, userId) => {
     return (dispatch) => {
         axios.put(`${url}/users/${userId}`, userDetails)
@@ -25,30 +48,34 @@ export const updateProfile = (userDetails, userId) => {
                     payload: userDetails
                 })
             })
-            .catch(err => console.log("error : ", err))
+            .catch(err => {
+                dispatch({
+                    type: "UPDATE_ERROR",
+                    msg: err.response.data.errorMessage
+                })
+            })
     }
 }
 
+//to register as user
 export const signIn = (user) => {
     return async (dispatch) => {
         await axios.post(`${url}/users`, user)
             .then(user => {
                 dispatch({
-                    type: "SIGN_IN",
-                    user
+                    type: "SIGN_IN"
                 })
             })
             .catch(err => {
                 dispatch({
                     type: "SIGNIN_ERROR",
-                    msg: "**This email Id has already been registered"
+                    msg: err.response.data.errorMessage
                 })
-
-                console.log(err.message)
             })
     }
 }
 
+//load user while refreshing
 export const loadUser = () => {
     return (dispatch, getState) => {
         const token = getState().user.token
@@ -63,6 +90,7 @@ export const loadUser = () => {
     }
 }
 
+//to login as user
 export const logIn = (credentials) => {
     return async (dispatch) => {
         await axios.post(`${url}/users/login`, credentials)
@@ -74,16 +102,15 @@ export const logIn = (credentials) => {
                 })
             })
             .catch(err => {
-                console.log("error code : ", err.response.status)
                 dispatch({
                     type: "LOGIN_ERROR",
-                    msg: "**Please enter correct email Id and password"
+                    msg: err.response.data.errorMessage
                 })
-                console.log(err.message)
             })
     }
 }
 
+//to log out user
 export const logOut = () => {
     return (dispatch) => {
         dispatch({

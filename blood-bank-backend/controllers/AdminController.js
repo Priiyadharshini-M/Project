@@ -4,6 +4,7 @@ const { adminValidation } = require('../validation/ValidationSchema')
 const { sendAdminToken } = require('../util/JwtToken')
 require('dotenv').config()
 
+//login admin
 const loginAdmin = async (req, res) => {
     let admin
     const { adminEmail, adminPassword } = req.body
@@ -23,7 +24,7 @@ const loginAdmin = async (req, res) => {
     }
 }
 
-
+//delete admin profile
 const deleteAdminProfile = async (req, res) => {
     let admin
     let adminId = req.params.adminId
@@ -40,6 +41,7 @@ const deleteAdminProfile = async (req, res) => {
     return res.status(404).json({ error: "Unable to delete this id" })
 }
 
+//view admin profile
 const viewAdminProfile = async (req, res) => {
     let admin
     let adminId = req.params.adminId
@@ -57,7 +59,7 @@ const viewAdminProfile = async (req, res) => {
     }
 }
 
-/**To update admin existing profile details */
+//update admin existing profile details
 const updateAdminProfile = async (req, res) => {
 
     let admin

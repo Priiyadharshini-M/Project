@@ -10,6 +10,7 @@ export const Search = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const specificDonor = useSelector(state => state.donorProfile.specificDonor.donor)
+    const donorErrMsg = useSelector(state => state.donorProfile)
     const [searchCredentials, setSearch] = useState({
         bloodGroup: '',
         city: ''
@@ -17,6 +18,8 @@ export const Search = () => {
     const changeHandler = (event) => {
         setSearch((prevState) => ({ ...prevState, [event.target.name]: event.target.value }))
     }
+
+    //to filter and search donors using blood-group and city
     const searchHandler = (event) => {
         event.preventDefault()
         dispatch(search(searchCredentials))
@@ -68,24 +71,27 @@ export const Search = () => {
                 </form>
             </div>
 
-            {specificDonor && specificDonor.map((specificDonor) => {
-                return (
-                    <div key={specificDonor._id}>
-                        <Box sx={{
-                            width: 400,
-                            height: 330,
-                            margin: 'auto',
-                            marginTop: '90px',
-                            backgroundColor: 'black'
-                        }}>
-                            <Typography variant="h4" marginLeft="25%" marginBottom="3%" color="white">Available Donors</Typography>
+            <Box sx={{
+                width: 400,
+                height: "3%",
+                margin: 'auto',
+                marginTop: '90px',
+                backgroundColor: 'black'
+            }}>
+                <Typography variant="h4" marginLeft="25%" marginBottom="3%" color="white">Available Donors</Typography>
+
+                <Typography sx={{ marginLeft: "15%", marginTop: "5%", width: "70%", color: 'red' }}>{donorErrMsg.donorSearchMsg}</Typography>
+
+                {specificDonor && specificDonor.map((specificDonor) => {
+                    return (
+                        <div key={specificDonor._id} >
                             <Stack spacing={1} sx={{ maxWidth: 600 }}>
                                 <SnackbarContent action="Donor Name" message={specificDonor.userName} sx={{ backgroundColor: "white", color: 'black' }} /><Button onClick={() => { navigate(`/search/donor/view/${specificDonor._id}`) }}>View</Button>
                             </Stack>
-                        </Box>
-                    </div>
-                )
-            })}
+                        </div>
+                    )
+                })}
+            </Box>
         </>
     )
 }

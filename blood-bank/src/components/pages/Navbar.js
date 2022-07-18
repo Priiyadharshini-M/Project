@@ -28,7 +28,10 @@ export const Navbar = () => {
                                 <IoIosHeart color="red" />
                             </IconButton>
                             <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>Blood Bank</Typography>
+                            <Tab sx={{ 'fontSize': '15px', 'fontWeight': 'bolder' }} LinkComponent={Link} to='/' label="Home" />
                             <Stack direction="row" spacing={2}>
+                                <Tab sx={{ 'fontSize': '15px', 'fontWeight': 'bolder' }} LinkComponent={Link} to='/search' label="Search Donors" />
+                                <Tab sx={{ 'fontSize': '15px', 'fontWeight': 'bolder' }} LinkComponent={Link} to='/camps' label="Blood Camps" />
                                 <Link to="/register" style={{ textDecoration: 'none' }}>
                                     <Box sx={{ color: "green", border: 3, borderRadius: 2 }}>
                                         <Button color="inherit" >Sign up</Button>
@@ -60,8 +63,8 @@ export const Navbar = () => {
                                     <Tab LinkComponent={Link} to='/camps' label="Blood Camps" />
                                     <Tab LinkComponent={Link} to='/about' label="About us" />
                                     <Tab LinkComponent={Link} to='/search' label="Search" />
-                                    <Tab LinkComponent={Link} to='/my-profile' label="My Profile" />
-                                    <Tab LinkComponent={Link} to='/donor-profile' label="My Profile" />
+                                    {user && <Tab LinkComponent={Link} to='/my-profile' label="My Profile" />}
+                                    {donor && <Tab LinkComponent={Link} to='/donor-profile' label="My Profile" />}
                                     <Link to="/" style={{ textDecoration: 'none' }}>
                                         <Box sx={{ color: "black", border: 3, borderRadius: 2, marginTop: "18%", marginLeft: "10%" }}>
                                             <Button color="inherit" onClick={() => logoutHandler()}>Log out</Button>

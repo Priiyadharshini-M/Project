@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { url } from "../../api/index"
 
+//delete admin token while log out
 export const deleteAdminToken = () => {
     return (dispatch) => {
         dispatch({
@@ -9,6 +10,7 @@ export const deleteAdminToken = () => {
     }
 }
 
+//store admin token while log in
 export const storeAdminToken = (admin) => {
     return (dispatch) => {
         axios.post(`${url}/admin/login`, admin)
@@ -19,9 +21,16 @@ export const storeAdminToken = (admin) => {
                     token: token.data.accessToken
                 })
             })
-            .catch(err => console.log(err.response.data, err.response.status))
+            .catch(err => {
+                dispatch({
+                    type: "ADMIN_LOGIN_ERROR",
+                    msg: err.response.data.errorMessage
+                })
+            })
     }
 }
+
+//load admin while refresh
 export const loadAdmin = () => {
     return (dispatch, getState) => {
         const token = getState().admin.adminToken
@@ -31,8 +40,12 @@ export const loadAdmin = () => {
                 token
             })
         }
+        else
+            return null
     }
 }
+
+//view admin profile
 export const viewAdminProfile = (adminId) => {
     return (dispatch) => {
         axios.get(`${url}/admin/${adminId}`)
@@ -42,9 +55,16 @@ export const viewAdminProfile = (adminId) => {
                     payload: admin.data.admin
                 })
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                dispatch({
+                    type: "DONOR_VIEW_PROFILE_ERROR",
+                    msg: err.response.data.errorMessage
+                })
+            })
     }
 }
+
+//update existing admin profile
 export const updateAdminProfile = (adminDetails, adminId) => {
     return (dispatch) => {
         axios.put(`${url}/admin/${adminId}`, adminDetails)
@@ -54,6 +74,29 @@ export const updateAdminProfile = (adminDetails, adminId) => {
                     payload: adminDetails
                 })
             })
-            .catch(err => console.log("error : ", err))
+            .catch(err => {
+                dispatch({
+                    type: "ADMIN_UPDATE_ERROR",
+                    msg: err.response.data.errorMessage
+                })
+            })
+    }
+}
+
+//delete admin profile
+export const deleteAdminProfile = (id) => {
+    return (dispatch) => {
+        axios.delete(`${url}/admin/${id}`)
+            .then(() => {
+                dispatch({
+                    type: "DELETE_PROFILE"
+                })
+            })
+            .catch(err => {
+                dispatch({
+                    type: "ADMIN_DELETE_ERROR",
+                    msg: err.response.data.errorMessage
+                })
+            })
     }
 }
