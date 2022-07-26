@@ -28,6 +28,7 @@ export const DonorRegister = () => {
 
     const changeHandler = (event) => {
         setRegisterCredentials((prevState) => ({ ...prevState, [event.target.name]: event.target.value }))
+        setFormError(() => (validate(registerCredentials)))
     }
 
     //register for donor 
@@ -35,7 +36,7 @@ export const DonorRegister = () => {
         event.preventDefault()
         setFormError(() => (validate(registerCredentials))) //front end validation
         setIsSubmit(true)
-        if (Object.keys(formError).length === 1 && isSubmit) {
+        if (Object.keys(formError).length === 0 && isSubmit) {
             dispatch(donorSignIn(registerCredentials))
         }
     }
@@ -134,21 +135,21 @@ export const DonorRegister = () => {
                 <Box sx={{ border: 3, width: "50%", height: "1600px", marginLeft: "25%", marginTop: "5%", borderRadius: 15 }}>
                     <Typography variant="h4" sx={{ marginLeft: "32%", marginTop: "3%", width: "70%" }}>Donor Registration</Typography>
 
-                    <TextField type="text" variant="standard" name="userName" value={registerCredentials.userName} onChange={changeHandler} label="Name" sx={{ marginLeft: "15%", marginTop: "5%", width: "70%" }} />
-                    <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.userName}</Typography>
-                    <TextField type="email" variant="standard" name="email" value={registerCredentials.email} onChange={changeHandler} label="Email Id" sx={{ marginLeft: "15%", marginTop: "5%", width: "70%" }} />
-                    <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.email}</Typography>
-                    <TextField type="text" variant="standard" name="contact" value={registerCredentials.contact} onChange={changeHandler} label="Phone No" sx={{ marginLeft: "15%", marginTop: "5%", width: "70%" }} />
-                    <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.contact}</Typography>
+                    <TextField type="text" variant="standard" name="userName" value={registerCredentials.userName} onChange={changeHandler} label="Name" sx={{ marginLeft: "15%", marginTop: "2%", width: "70%" }} />
+                    <Typography sx={{ marginLeft: "15%", marginTop: "1%", width: "70%", color: "red" }}>{formError.userName}</Typography>
+                    <TextField type="email" variant="standard" name="email" value={registerCredentials.email} onChange={changeHandler} label="Email Id" sx={{ marginLeft: "15%", marginTop: "2%", width: "70%" }} />
+                    <Typography sx={{ marginLeft: "15%", marginTop: "1%", width: "70%", color: "red" }}>{formError.email}</Typography>
+                    <TextField type="text" variant="standard" name="contact" value={registerCredentials.contact} onChange={changeHandler} label="Phone No" sx={{ marginLeft: "15%", marginTop: "2%", width: "70%" }} />
+                    <Typography sx={{ marginLeft: "15%", marginTop: "1%", width: "70%", color: "red" }}>{formError.contact}</Typography>
                     <TextareaAutosize type="text" variant="standard" name="address" value={registerCredentials.address} onChange={changeHandler} placeholder="Address" style={{ marginTop: "70px", marginLeft: "15%", width: "70%" }} />
-                    <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.address}</Typography>
-                    <TextField type="password" variant="standard" name="password" value={registerCredentials.password} onChange={changeHandler} label="Password" sx={{ marginLeft: "15%", marginTop: "5%", width: "70%" }} />
-                    <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.password}</Typography>
-                    <TextField type="password" variant="standard" name="confirmPassword" value={registerCredentials.confirmPassword} onChange={changeHandler} label="Confirm Password" sx={{ marginLeft: "15%", marginTop: "5%", width: "70%" }} />
-                    <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.confirmPassword}</Typography>
-                    <TextField variant="standard" name="city" value={registerCredentials.city} onChange={changeHandler} label="Current city" sx={{ marginLeft: "15%", marginTop: "5%", width: "70%" }} />
-                    <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.city}</Typography>
-                    <FormControl sx={{ width: "70%", marginTop: "5%", marginLeft: "15%" }}>
+                    <Typography sx={{ marginLeft: "15%", marginTop: "1%", width: "70%", color: "red" }}>{formError.address}</Typography>
+                    <TextField type="password" variant="standard" name="password" value={registerCredentials.password} onChange={changeHandler} label="Password" sx={{ marginLeft: "15%", marginTop: "2%", width: "70%" }} />
+                    <Typography sx={{ marginLeft: "15%", marginTop: "1%", width: "70%", color: "red" }}>{formError.password}</Typography>
+                    <TextField type="password" variant="standard" name="confirmPassword" value={registerCredentials.confirmPassword} onChange={changeHandler} label="Confirm Password" sx={{ marginLeft: "15%", marginTop: "2%", width: "70%" }} />
+                    <Typography sx={{ marginLeft: "15%", marginTop: "1%", width: "70%", color: "red" }}>{formError.confirmPassword}</Typography>
+                    <TextField variant="standard" name="city" value={registerCredentials.city} onChange={changeHandler} label="Current city" sx={{ marginLeft: "15%", marginTop: "2%", width: "70%" }} />
+                    <Typography sx={{ marginLeft: "15%", marginTop: "1%", width: "70%", color: "red" }}>{formError.city}</Typography>
+                    <FormControl sx={{ width: "70%", marginTop: "4%", marginLeft: "15%" }}>
                         <InputLabel id="demo-simple-select-label">Blood-Group</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
@@ -168,8 +169,8 @@ export const DonorRegister = () => {
                         </Select>
                     </FormControl>
                     <FormControl>
-                        <Typography sx={{ marginLeft: "25%", marginTop: "2%", width: "70%", color: "red" }}>{formError.bloodGroup}</Typography>
-                        <FormLabel sx={{ marginLeft: "40%", marginTop: "10%" }}>Gender</FormLabel>
+                        <Typography sx={{ marginLeft: "35%", marginTop: "1%", width: "70%", color: "red" }}>{formError.bloodGroup}</Typography>
+                        <FormLabel sx={{ marginLeft: "40%", marginTop: "4%" }}>Gender</FormLabel>
                         <RadioGroup
                             row
                             required
@@ -181,11 +182,11 @@ export const DonorRegister = () => {
                             <FormControlLabel sx={{ marginLeft: "0%", marginTop: "0%", width: "0%" }} value="other" control={<Radio />} label="Other" />
                         </RadioGroup>
                     </FormControl>
-                    <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.gender}</Typography>
-                    <TextField type="number" variant="standard" name="age" value={registerCredentials.age} onChange={changeHandler} label="Age" sx={{ marginLeft: "15%", marginTop: "5%", width: "70%" }} />
-                    <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.age}</Typography>
-                    <TextField type="date" variant="standard" name="lastDonateDate" value={registerCredentials.lastDonateDate} onChange={changeHandler} label="Last Donated Date" sx={{ marginLeft: "15%", marginTop: "5%", width: "70%" }} />
-                    <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.lastDonateDate}</Typography>
+                    <Typography sx={{ marginLeft: "15%", marginTop: "1%", width: "70%", color: "red" }}>{formError.gender}</Typography>
+                    <TextField type="number" variant="standard" name="age" value={registerCredentials.age} onChange={changeHandler} label="Age" sx={{ marginLeft: "15%", marginTop: "2%", width: "70%" }} />
+                    <Typography sx={{ marginLeft: "15%", marginTop: "1%", width: "70%", color: "red" }}>{formError.age}</Typography>
+                    <TextField type="date" variant="standard" name="lastDonateDate" value={registerCredentials.lastDonateDate} onChange={changeHandler} label="Last Donated Date" sx={{ marginLeft: "15%", marginTop: "2%", width: "70%" }} />
+                    <Typography sx={{ marginLeft: "15%", marginTop: "1%", width: "70%", color: "red" }}>{formError.lastDonateDate}</Typography>
                     <FormControl sx={{ width: "70%", marginTop: "5%", marginLeft: "15%" }}>
                         <InputLabel id="demo-simple-select-label">Any allergies</InputLabel>
                         <Select

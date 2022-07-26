@@ -49,7 +49,7 @@ export const DonorProfile = () => {
                     <SnackbarContent message={donorProfile.disease} action="Disease" sx={{ backgroundColor: "white", color: 'black' }} />
                 </Stack>
                 <Button LinkComponent={Link} to='/my-profile/edit-donorprofile' onClick={() => editHandler()} variant='outlined' sx={{ margin: 1, borderRadius: 3, marginLeft: 20, marginTop: 3, backgroundColor: "red" }} >Edit</Button>
-                <Button LinkComponent={Link} to='/my-profile/edit-donorprofile' onClick={() => deleteHandler()} variant='outlined' sx={{ margin: 1, borderRadius: 3, marginLeft: 20, marginTop: 3, backgroundColor: "red" }} >Delete</Button>
+                <Button LinkComponent={Link} to='/my-profile/edit-donorprofile' onClick={() => deleteHandler()} variant='outlined' sx={{ margin: 1, borderRadius: 3, marginLeft: 19, marginTop: 1, backgroundColor: "red" }} >Delete</Button>
             </Box>
         </>
     )

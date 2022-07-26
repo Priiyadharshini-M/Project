@@ -50,7 +50,7 @@ const AdminEditProfile = () => {
     event.preventDefault()
     setFormError(() => (validate(adminCredentials))) //front end validation
     setIsSubmit(true)
-    if (Object.keys(formError).length === 1 && isSubmit) {
+    if (Object.keys(formError).length === 0 && isSubmit) {
       dispatch(updateAdminProfile(adminCredentials, adminId))
     }
   }

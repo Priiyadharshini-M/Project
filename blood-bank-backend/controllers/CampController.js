@@ -7,6 +7,10 @@ const viewCamps = async (req, res) => {
     let camps
     try {
         camps = await Camp.find()
+        if(camps.length <= 0)
+        {
+            throw "No camps found"
+        }
         return res.status(200).json({ camps })
     }
     catch (err) {

@@ -1,7 +1,7 @@
 const initialState = {
     camps: '',
     campAddSuccess: false,
-    campAddmsg: '',
+    campAddMsg: '',
     campViewMsg: '',
     campUpdateMsg: '',
     campUpdateSuccess: false,
@@ -19,7 +19,7 @@ export const reducer = (state = initialState, action) => {
             return {
                 ...initialState,
                 campAddSuccess: true,
-                campAddmsg: ''
+                campAddMsg: ''
             }
 
         case "VIEW_CAMP":
@@ -43,27 +43,27 @@ export const reducer = (state = initialState, action) => {
                 campDeleteSuccess: true
             }
 
-        case "ADD_CAMPS_ERROR":
+        case "ADD_CAMP_ERROR":
             return {
                 ...initialState,
                 campAddSuccess: false,
-                campAddmsg: action.msg
+                campAddMsg: action.msg
             }
 
-        case "VIEW_CAMPS_ERROR":
+        case "VIEW_CAMP_ERROR":
             return {
                 ...initialState,
                 campViewMsg: action.msg
             }
 
-        case "UPDATE_CAMPS_ERROR":
+        case "UPDATE_CAMP_ERROR":
             return {
                 ...initialState,
                 campUpdateMsg: action.msg,
                 campUpdateSuccess: false
             }
 
-        case "DELETE_CAMPS_ERROR":
+        case "DELETE_CAMP_ERROR":
             return {
                 ...initialState,
                 campDeleteMsg: action.msg,

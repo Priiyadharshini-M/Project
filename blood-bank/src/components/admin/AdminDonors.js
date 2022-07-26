@@ -39,7 +39,7 @@ export const AdminDonors = () => {
   }
   return (
     <div>
-      {!donors && <Typography sx={{ marginLeft: "15%", marginTop: "5%", width: "70%", color: 'red' }}>{donorErrMsg.donorAllMsg}</Typography>}
+      <Typography sx={{ marginLeft: "15%", marginTop: "5%", width: "70%", color: 'red' }}>{donorErrMsg.donorAllMsg}</Typography>
 
       {donors && donors.map((donor, index) => {
         return (

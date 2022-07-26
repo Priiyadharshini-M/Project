@@ -36,7 +36,7 @@ export const Camps = () => {
   const dispatch = useDispatch();
 
   const camps = useSelector((state) => state.campDetails.camp)
-  const { campDeleteSuccess } = useSelector((state) => state.camp)
+  const { campDeleteSuccess, campViewMsg } = useSelector((state) => state.camp)
 
   useEffect(() => {
     dispatch(viewCamps()) //view all camps
@@ -69,6 +69,7 @@ export const Camps = () => {
         </Button>
       }
 
+      <Typography>{campViewMsg}</Typography>
       {camps && camps.map((camp) => {
         return (
           <div key={camp._id} >

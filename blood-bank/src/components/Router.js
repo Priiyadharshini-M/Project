@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Home } from '../components/pages/Home'
 import { Login } from '../components/pages/Login'
@@ -10,7 +9,6 @@ import { AdminHome } from '../components/admin/AdminHome'
 import { MyProfile } from '../components/user/MyProfile'
 import { DonorProfile } from '../components/donor/DonorProfile'
 import AdminLogin from '../components/admin/AdminLogin'
-import { useSelector } from 'react-redux';
 import EditProfile from '../components/user/EditMyProfile';
 import EditDonorProfile from '../components/donor/EditDonorProfile';
 import AdminProfile from '../components/admin/AdminProfile';

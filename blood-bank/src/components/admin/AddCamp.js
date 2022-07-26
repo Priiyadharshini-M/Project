@@ -22,6 +22,7 @@ export const AddCamp = () => {
 
     const changeHandler = (event) => {
         setCampDetails((prevState) => ({ ...prevState, [event.target.name]: event.target.value }))
+        setFormError(() => (validate(campDetails)))
     }
 
     //to add new camp details
@@ -29,7 +30,7 @@ export const AddCamp = () => {
         event.preventDefault()
         setFormError(() => (validate(campDetails)))
         setIsSubmit(true)
-        if (Object.keys(formError).length === 1 && isSubmit) {
+        if (Object.keys(formError).length === 0 && isSubmit) {
             dispatch(addCamp(campDetails))
         }
     }
@@ -81,20 +82,20 @@ export const AddCamp = () => {
 
     return (
         <form onSubmit={submitHandler}>
-            <Box sx={{ border: 3, width: "50%", height: "650px", marginLeft: "25%", marginTop: "5%", borderRadius: 15 }}>
-                <Typography variant="h4" sx={{ marginLeft: "32%", marginTop: "5%", width: "70%" }}>Camp details</Typography>
-                <TextField type="text" variant="standard" name="campName" value={campDetails.campName} onChange={changeHandler} label="Camp Name" sx={{ marginLeft: "15%", marginTop: "10%", width: "70%" }} />
-                <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.campName}</Typography>
-                <TextField type="text" variant="standard" name="hospitalName" value={campDetails.hospitalName} onChange={changeHandler} label="Hospital Name" sx={{ marginLeft: "15%", marginTop: "10%", width: "70%" }} />
-                <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.hospitalName}</Typography>
-                <TextField type="text" variant="standard" name="address" value={campDetails.address} onChange={changeHandler} label="City" sx={{ marginLeft: "15%", marginTop: "10%", width: "70%" }} />
-                <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.address}</Typography>
-                <TextField type="date" variant="standard" name="startDate" value={campDetails.startDate} onChange={changeHandler} label="Start Date" sx={{ marginLeft: "15%", marginTop: "10%", width: "70%" }} />
-                <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.startDate}</Typography>
-                <TextField type="date" variant="standard" name="endDate" value={campDetails.endDate} onChange={changeHandler} label="End Date" sx={{ marginLeft: "15%", marginTop: "10%", width: "70%" }} />
-                <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.endDate}</Typography>
+            <Box sx={{ border: 3, width: "50%", height: "690px", marginLeft: "25%", marginTop: "5%", borderRadius: 15 }}>
+                <Typography variant="h4" sx={{ marginLeft: "32%", marginTop: "3%", width: "70%" }}>Camp details</Typography>
+                <TextField type="text" variant="standard" name="campName" value={campDetails.campName} onChange={changeHandler} label="Camp Name" sx={{ marginLeft: "15%", marginTop: "5%", width: "70%" }} />
+                <Typography sx={{ marginLeft: "15%", marginTop: "1%", width: "70%", color: "red" }}>{formError.campName}</Typography>
+                <TextField type="text" variant="standard" name="hospitalName" value={campDetails.hospitalName} onChange={changeHandler} label="Hospital Name" sx={{ marginLeft: "15%", marginTop: "3%", width: "70%" }} />
+                <Typography sx={{ marginLeft: "15%", marginTop: "1%", width: "70%", color: "red" }}>{formError.hospitalName}</Typography>
+                <TextField type="text" variant="standard" name="address" value={campDetails.address} onChange={changeHandler} label="City" sx={{ marginLeft: "15%", marginTop: "2%", width: "70%" }} />
+                <Typography sx={{ marginLeft: "15%", marginTop: "1%", width: "70%", color: "red" }}>{formError.address}</Typography>
+                <TextField type="date" variant="standard" name="startDate" value={campDetails.startDate} onChange={changeHandler} label="Start Date" sx={{ marginLeft: "15%", marginTop: "3%", width: "70%" }} />
+                <Typography sx={{ marginLeft: "15%", marginTop: "1%", width: "70%", color: "red" }}>{formError.startDate}</Typography>
+                <TextField type="date" variant="standard" name="endDate" value={campDetails.endDate} onChange={changeHandler} label="End Date" sx={{ marginLeft: "15%", marginTop: "3%", width: "70%" }} />
+                <Typography sx={{ marginLeft: "15%", marginTop: "1%", width: "70%", color: "red" }}>{formError.endDate}</Typography>
                 <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{campAddMsg}</Typography>
-                <Button color="inherit" type="submit" sx={{ width: "20%", marginLeft: "40%", marginTop: "10%", backgroundColor: "black", color: "green", border: 3 }}>Submit</Button>
+                <Button color="inherit" type="submit" sx={{ width: "20%", marginLeft: "40%", marginTop: "5%", backgroundColor: "black", color: "green", border: 3 }}>Submit</Button>
             </Box>
         </form>
     )

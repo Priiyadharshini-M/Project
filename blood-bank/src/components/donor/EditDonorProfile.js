@@ -79,7 +79,7 @@ const EditDonorProfile = () => {
         event.preventDefault()
         setFormError(() => (validate(donorCredentials))) //front end validation
         setIsSubmit(true)
-        if (Object.keys(formError).length === 1 && isSubmit) {
+        if (Object.keys(formError).length === 0 && isSubmit) {
             dispatch(updateDonorProfile(donorCredentials, donorId))
         }
     }

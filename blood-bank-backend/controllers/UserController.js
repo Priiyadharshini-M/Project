@@ -21,7 +21,7 @@ const registerUser = async (req, res) => {
             userEmail
         })
         await user.save()
-        sendToken(user, 201, res)
+        return res.status(200).json({ user })
     }
     catch (err) {
         if (err.isJoi === true) {
@@ -48,7 +48,8 @@ const loginUser = async (req, res, next) => {
             throw "No account exists with this email id"
         if (!bcryptjs.compareSync(req.body.userPassword, user.userPassword))
             throw "Incorrect Password"
-        sendToken(user, 201, res)
+        const result = sendToken(user)
+        return res.status(200).cookie("token", result.token, result).json({accessToken: result.token})
     }
     catch (err) {
         return res.status(404).json({ errorMessage: err })

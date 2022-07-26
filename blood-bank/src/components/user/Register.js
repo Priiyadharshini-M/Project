@@ -24,6 +24,7 @@ export const Register = () => {
 
     const changeHandler = (event) => {
         setRegisterCredentials((prevState) => ({ ...prevState, [event.target.name]: event.target.value }))
+        setFormError(() => (validate(registerCredentials)))
     }
 
     //submit user details for registration
@@ -31,7 +32,7 @@ export const Register = () => {
         event.preventDefault()
         setFormError(() => (validate(registerCredentials))) //front end validation
         setIsSubmit(true)
-        if (Object.keys(formError).length === 1 && isSubmit) {
+        if (Object.keys(formError).length === 0 && isSubmit) {
             dispatch(signIn(registerCredentials)) //register action
         }
     }
@@ -94,19 +95,19 @@ export const Register = () => {
                     <Box sx={{ border: 3, width: "50%", height: "950px", marginLeft: "25%", marginTop: "5%", borderRadius: 15 }}>
                         <Typography variant="h4" sx={{ marginLeft: "32%", marginTop: "5%", width: "70%" }}>User Registration</Typography>
 
-                        <TextField type="text" variant="standard" name="userName" value={registerCredentials.userName} onChange={changeHandler} label="Name" sx={{ marginLeft: "15%", marginTop: "10%", width: "70%" }} />
-                        <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.userName}</Typography>
-                        <TextField type="email" variant="standard" name="userEmail" value={registerCredentials.userEmail} onChange={changeHandler} label="Email Id" sx={{ marginLeft: "15%", marginTop: "10%", width: "70%" }} />
-                        <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.userEmail}</Typography>
-                        <TextField type="text" variant="standard" name="userContact" value={registerCredentials.userContact} onChange={changeHandler} label="Phone No" sx={{ marginLeft: "15%", marginTop: "10%", width: "70%" }} />
-                        <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.userContact}</Typography>
+                        <TextField type="text" variant="standard" name="userName" value={registerCredentials.userName} onChange={changeHandler} label="Name" sx={{ marginLeft: "15%", marginTop: "5%", width: "70%" }} />
+                        <Typography sx={{ marginLeft: "15%", marginTop: "1%", width: "70%", color: "red" }}>{formError.userName}</Typography>
+                        <TextField type="email" variant="standard" name="userEmail" value={registerCredentials.userEmail} onChange={changeHandler} label="Email Id" sx={{ marginLeft: "15%", marginTop: "5%", width: "70%" }} />
+                        <Typography sx={{ marginLeft: "15%", marginTop: "1%", width: "70%", color: "red" }}>{formError.userEmail}</Typography>
+                        <TextField type="text" variant="standard" name="userContact" value={registerCredentials.userContact} onChange={changeHandler} label="Phone No" sx={{ marginLeft: "15%", marginTop: "5%", width: "70%" }} />
+                        <Typography sx={{ marginLeft: "15%", marginTop: "1%", width: "70%", color: "red" }}>{formError.userContact}</Typography>
                         <TextareaAutosize type="text" variant="standard" name="userAddress" value={registerCredentials.userAddress} onChange={changeHandler} placeholder="Address" style={{ marginTop: "70px", marginLeft: "15%", width: "70%" }} />
-                        <TextField type="password" variant="standard" name="userPassword" value={registerCredentials.userPassword} onChange={changeHandler} label="Password" sx={{ marginLeft: "15%", marginTop: "10%", width: "70%" }} />
-                        <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.userPassword}</Typography>
-                        <TextField type="password" variant="standard" name="confirmUserPassword" value={registerCredentials.confirmUserPassword} onChange={changeHandler} label="Confirm Password" sx={{ marginLeft: "15%", marginTop: "10%", width: "70%" }} />
-                        <Typography sx={{ marginLeft: "15%", marginTop: "2%", width: "70%", color: "red" }}>{formError.confirmUserPassword}</Typography>
+                        <TextField type="password" variant="standard" name="userPassword" value={registerCredentials.userPassword} onChange={changeHandler} label="Password" sx={{ marginLeft: "15%", marginTop: "5%", width: "70%" }} />
+                        <Typography sx={{ marginLeft: "15%", marginTop: "1%", width: "70%", color: "red" }}>{formError.userPassword}</Typography>
+                        <TextField type="password" variant="standard" name="confirmUserPassword" value={registerCredentials.confirmUserPassword} onChange={changeHandler} label="Confirm Password" sx={{ marginLeft: "15%", marginTop: "5%", width: "70%" }} />
+                        <Typography sx={{ marginLeft: "15%", marginTop: "1%", width: "70%", color: "red" }}>{formError.confirmUserPassword}</Typography>
                         <Typography sx={{ marginLeft: "15%", marginTop: "5%", width: "70%", color: 'red' }}>{signInMsg}</Typography>
-                        <Button color="inherit" type="submit" sx={{ width: "20%", marginLeft: "40%", marginTop: "10%", backgroundColor: "black", color: "green", border: 3 }}>Register</Button>
+                        <Button color="inherit" type="submit" sx={{ width: "20%", marginLeft: "40%", marginTop: "7%", backgroundColor: "black", color: "green", border: 3 }}>Register</Button>
                     </Box>
                 </form>
             }

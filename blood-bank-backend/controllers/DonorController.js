@@ -1,6 +1,6 @@
 let Donor = require('../models/Donor')
 const { donorValidation } = require('../validation/ValidationSchema')
-const { sendDonorToken } = require('../util/JwtToken')
+const { sendToken } = require('../util/JwtToken')
 const bcryptjs = require('bcryptjs');
 
 //view all donors
@@ -8,6 +8,9 @@ const viewDonors = async (req, res) => {
     let donor
     try {
         donor = await Donor.find()
+        if(donor.length <= 0){
+            throw "No donors found"
+        }
         return res.status(200).json({ donor })
     }
     catch (err) {
@@ -67,7 +70,8 @@ const loginDonor = async (req, res, next) => {
             throw "No account exists with this email id"
         if (!bcryptjs.compareSync(req.body.password, donor.password))
             throw "Incorrect Password"
-        sendDonorToken(donor, 201, res)
+        const result = sendToken(donor)
+        return res.status(200).cookie("donorToken", result.token, result).json({accessToken: result.token})
     }
     catch (err) {
         return res.status(404).json({ errorMessage: err })
@@ -148,6 +152,8 @@ const viewSpecificDonors = async (req, res) => {
     let donor
     try {
         donor = await Donor.find({ bloodGroup: req.body.bloodGroup, city: req.body.city })
+        if(donor.length <= 0){
+        throw "No donors found" }
         return res.status(200).json({ donor })
     }
     catch (err) {

@@ -53,7 +53,7 @@ const EditProfile = () => {
     event.preventDefault()
     setFormError(() => (validate(userCredentials))) //front end validation
     setIsSubmit(true)
-    if (Object.keys(formError).length === 1 && isSubmit) {
+    if (Object.keys(formError).length === 0 && isSubmit) {
       dispatch(updateProfile(userCredentials, userId)) //update profile action
     }
   }

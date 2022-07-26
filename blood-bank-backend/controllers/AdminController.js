@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt')
 const Admin = require('../models/Admin')
 const { adminValidation } = require('../validation/ValidationSchema')
-const { sendAdminToken } = require('../util/JwtToken')
+const { sendToken } = require('../util/JwtToken')
 require('dotenv').config()
 
 //login admin
@@ -13,11 +13,12 @@ const loginAdmin = async (req, res) => {
         let options = { abortEarly: false }
         const loginResult = await adminValidation.validateAsync({ adminEmail, adminPassword }, options)
         admin = await Admin.findOne({ adminEmail: loginResult.adminEmail })
-        if (admin == null)
+        if (admin === null)
             throw "No account exists with this email id"
         if (!loginResult.adminPassword === admin.adminPassword)
             throw "Password doesn't match"
-        sendAdminToken(admin, 200, res);
+        const result = sendToken(admin)
+        return res.status(200).cookie("adminToken", result.token, result).json({accessToken: result.token})
     }
     catch (err) {
         return res.status(404).json({ errorMessage: err })
